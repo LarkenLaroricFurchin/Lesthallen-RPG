@@ -9,8 +9,10 @@
 
 #include "logsAndExceptions.h"
 #include "itemHandler.h"
+//#include "Lesthallen RPG.h"
 
 inline std::string defaultCharacterFileDir = "C:/Users/LIAMF/Documents/C++ Projects/Learning C++/Character Files/";
+inline bool characterLoaded;
 
 
 
@@ -57,6 +59,8 @@ public:
 		characterArmourLegs.itemID = 102;
 		characterArmourFeet.itemID = 103;
 
+		characterLoaded = true;
+
 		writeLog("Character Created");
 
 		saveCharacterDetails();
@@ -76,8 +80,10 @@ public:
 
 		characterFile.close();
 
-		writeLog("Character File Close");
 		writeLog("Character Saved");
+
+		writeLog("Character File Close");
+		
 	}
 
 	void loadCharacterDetails()
@@ -126,9 +132,24 @@ public:
 
 		std::string headArmourID;
 		std::getline(characterFile, headArmourID);
-		std::stringstream convertedID(headArmourID);
-		convertedID >> characterArmourHead.itemID;
+		std::stringstream convertedHeadID(headArmourID);
+		convertedHeadID >> characterArmourHead.itemID;
 
+		std::string torsoArmourID;
+		std::getline(characterFile, torsoArmourID);
+		std::stringstream convertedTorsoID(torsoArmourID);
+		convertedTorsoID >> characterArmourTorso.itemID;
+
+		std::string legArmourID;
+		std::getline(characterFile, legArmourID);
+		std::stringstream convertedLegID(legArmourID);
+		convertedLegID >> characterArmourLegs.itemID;
+
+		std::string feetArmourID;
+		std::getline(characterFile, feetArmourID);
+		std::stringstream convertedFeetID(feetArmourID);
+		convertedFeetID >> characterArmourFeet.itemID;
+		
 		loadArmour(characterArmourHead);
 		loadArmour(characterArmourTorso);
 		loadArmour(characterArmourLegs);
@@ -137,6 +158,8 @@ public:
 		writeLog("Character Loaded");
 
 		printCharacterDetails();
+
+		characterLoaded = true;
 
 		characterFile.close();
 		writeLog("Character File Closed");

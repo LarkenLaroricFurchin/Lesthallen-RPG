@@ -161,6 +161,7 @@
     <ClInclude Include="characterOperations.h" />
     <ClInclude Include="getTime.h" />
     <ClInclude Include="itemHandler.h" />
+    <ClInclude Include="Lesthallen RPG.h" />
     <ClInclude Include="logsAndExceptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

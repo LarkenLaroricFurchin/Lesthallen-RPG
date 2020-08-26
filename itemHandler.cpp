@@ -3,9 +3,9 @@
 #include <sstream>
 #include <fstream>
 //====================[]====================
+#include "Lesthallen RPG.h"
 #include "itemHandler.h"
 #include "characterOperations.h"
-#include "LearningC++0.1.h"
 
 
 enum ItemType
@@ -26,14 +26,15 @@ std::string armour{ "Armour/" };
 
 void loadArmour(Armour& selectedArmourSlot)
 {
-	int armourID = playerCharacter.characterArmourHead.itemID;
+	int armourID = selectedArmourSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
 	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory.append(armour).append(convertedID);
+	std::string directory = defaultItemDirectory.append(armour).append(convertedID).append(".txt");
 	
 	std::ifstream armourFile(directory);
+	std::cout << directory;
 	writeLog("Armour File Opened");
 
-	std::string unconvertedArmourMaterial;
+	std::string unconvertedArmourMaterial; //converts the number thatrs read from the file into an actual integer
 	std::getline(armourFile, unconvertedArmourMaterial);
 	std::stringstream convertedMaterial(unconvertedArmourMaterial);
 	int armourMaterial;
@@ -106,6 +107,7 @@ void loadArmour(Armour& selectedArmourSlot)
 
 	armourFile.close();
 	writeLog("Armour File Closed");
+	defaultItemDirectory = "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Items/";
 }
 
 void loadItem(int iType) //iType is just item type but made different enough to be distinguishable
