@@ -89,7 +89,7 @@ public:
 	void loadCharacterDetails()
 	{
 		system("CLS");
-		printLogo(8, currentPath.append("/Debug/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
+		printLogo(8, currentPath.append("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
 		std::string characterDirectory = defaultCharacterFileDir.append(characterName).append(".txt");
 
 

@@ -180,7 +180,11 @@ void settingsMenu()
     case 1:
         writeLog("Settings Auto Save Selected", TWO);
         system("CLS");
-        printLogo(21, logoSettingsAutoSaveDirectory.append(currentASSetting), false); //currentASSetting is in "Lesthallen RPG.h"
+        //std::cout << settingsAutoSaveDirectory.append(currentASSetting);
+        std::cout << settingsAutoSaveDirectory;
+        std::cout << currentASSetting;
+        std::cin.get();
+        printLogo(21, settingsAutoSaveDirectory.append(currentASSetting), false); //currentASSetting is in "Lesthallen RPG.h"
         settingsMenuAutoSave();
         break;
     case 2:
@@ -295,17 +299,63 @@ void createDirectories()
 */
 void credits()
 {
-    printLogo(34, currentPath.append("/Debug/Lesthallen RPG/Main Menu/Credits.txt"), false);
+    printLogo(35, creditsFile, false);
     std::cout << "Press Enter to return to the Main Menu...";
     std::cin.get();
     mainMenu();
 }
 
+void setDirectories()
+{
+    //set the games directories to the current location of the .exe
+    //SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+    currentPath = convertDirectory(currentPath, '\\', '/');
+    logoMainDirectory = currentPath + "/Lesthallen RPG/Main Menu/LOGO.txt";
+
+    //settings
+    settingsDirectory = currentPath + "/Lesthallen RPG/Main Menu/Settings";
+    logoSettingsDirectory = settingsDirectory + "/SettingsMenu.txt";
+
+    //Setting auto save
+    settingsAutoSaveDirectory = settingsDirectory + "/Settings 1";
+    settingsAutoSaveDirectoryError = settingsAutoSaveDirectory + "/Settings1Error.txt";
+    settingsAutoSaveDirectoryOff = settingsAutoSaveDirectory + "/Settings1Off.txt";
+    settingsAutoSaveDirectoryOn = settingsAutoSaveDirectory + "/Settings1On.txt";
+
+    //Settings Save Game History
+    settingsSaveGameHistoryDirectory = settingsDirectory + "/Settings 2";
+    settingsSaveGameHistoryDirectoryError = settingsSaveGameHistoryDirectory + "/Settings2Error.txt";
+    settingsSaveGameHistoryDirectoryOff = settingsSaveGameHistoryDirectory + "/Settings2Off.txt";
+    settingsSaveGameHistoryDirectoryOn = settingsSaveGameHistoryDirectory + "/Settings2On.txt";
+
+    //Settings Game Logging Level
+    settingsGameLoggingLevelDirectory = settingsDirectory + "/Settings 3";
+    settingsGameLoggingLevelDirectoryError = settingsGameLoggingLevelDirectory + "/Settings3Error.txt";
+    settingsGameLoggingLevelDirectoryHigh = settingsGameLoggingLevelDirectory + "/Settings3High.txt";
+    settingsGameLoggingLevelDirectoryMedium = settingsGameLoggingLevelDirectory + "/Settings3Medium.txt";
+    settingsGameLoggingLevelDirectoryLow = settingsGameLoggingLevelDirectory + "/Settings3Low.txt";
+
+
+    creditsFile = currentPath + "/Lesthallen RPG/Main Menu/Credits.txt";
+    std::cout << creditsFile;
+    std::cin.get();
+    gameStartUp = false;
+}
+
+void firstLoop() //checking to see if the game has just been started up; if it is then the game will run some neccessary functions to make sure everything is correct (directories etc...)
+{
+    if (gameStartUp == true)
+    {
+        setDirectories();
+    }
+}
+
 void mainMenu()
 {
+    firstLoop();//Checks if this is the first time mainMenu has been called during the current life of the program
+
     //prints the main menu logo with the choices at the bottom.
     system("CLS");
-    currentPath = convertDirectory(currentPath, '\\', '/');
     printLogo(20, logoMainDirectory, true);
 
     int userInput{ 1 };
