@@ -4,7 +4,14 @@
 #include <fstream>
 #include "getTime.h"
 
-void writeLog(std::string eventToLog);
+enum LogLevels
+{
+	ONE = 1,
+	TWO = 2,
+	THREE = 3,
+};
+
+void writeLog(std::string eventToLog, int logLevel);
 
 
 

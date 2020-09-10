@@ -1,20 +1,32 @@
+#include "Lesthallen RPG.h"
 #include "logsAndExceptions.h"
 #include "characterOperations.h"
-#include "LearningC++0.1.h"
+
 
 
 	std::string logAndExceptionDirectory{ "C:/Users/LIAMF/Documents/C++ Projects/Learning C++/Log/" };
-	std::string characterLogFile;
+	std::string LogFile;
 
 	
 
-void writeLog(std::string eventToLog)
+void writeLog(std::string eventToLog, int logLevel)
 {
-	characterLogFile = logAndExceptionDirectory.append(playerCharacter.characterName).append("Log.txt");
-	std::ofstream logFile(characterLogFile, std::ios::app);
-	std::string curTime = getTime();
-	eventToLog = (curTime).append("]  ").append(eventToLog);
-	logFile << "[" << eventToLog << "\n";
-	logFile.close();
+	if (characterLoaded == false)
+	{
+		LogFile = logAndExceptionDirectory.append("Log.txt");
+	}
+	else
+	{
+		LogFile = logAndExceptionDirectory.append(playerCharacter.characterName).append("Log.txt");
+	}
+	
+	if (logLevel >= systemLogLevel)
+	{
+		std::ofstream logFile(LogFile, std::ios::app);
+		std::string curTime = getTime();
+		eventToLog = (curTime).append("]  ").append(eventToLog);
+		logFile << "[" << eventToLog << "\n";
+		logFile.close();
+	}
 	logAndExceptionDirectory = "C:/Users/LIAMF/Documents/C++ Projects/Learning C++/Log/";
 }

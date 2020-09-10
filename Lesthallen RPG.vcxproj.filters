@@ -32,6 +32,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="logsAndExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="characterOperations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -41,7 +44,10 @@
     <ClInclude Include="itemHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="logsAndExceptions.h">
+    <ClInclude Include="Lesthallen RPG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

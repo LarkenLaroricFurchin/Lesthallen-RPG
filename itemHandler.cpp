@@ -3,9 +3,9 @@
 #include <sstream>
 #include <fstream>
 //====================[]====================
+#include "Lesthallen RPG.h"
 #include "itemHandler.h"
 #include "characterOperations.h"
-#include "LearningC++0.1.h"
 
 
 enum ItemType
@@ -26,14 +26,14 @@ std::string armour{ "Armour/" };
 
 void loadArmour(Armour& selectedArmourSlot)
 {
-	int armourID = playerCharacter.characterArmourHead.itemID;
+	int armourID = selectedArmourSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
 	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory.append(armour).append(convertedID);
+	std::string directory = defaultItemDirectory.append(armour).append(convertedID).append(".txt");
 	
 	std::ifstream armourFile(directory);
-	writeLog("Armour File Opened");
+	writeLog("Armour File Opened", TWO);
 
-	std::string unconvertedArmourMaterial;
+	std::string unconvertedArmourMaterial; //converts the number thatrs read from the file into an actual integer
 	std::getline(armourFile, unconvertedArmourMaterial);
 	std::stringstream convertedMaterial(unconvertedArmourMaterial);
 	int armourMaterial;
@@ -62,7 +62,7 @@ void loadArmour(Armour& selectedArmourSlot)
 		selectedArmourSlot.armourMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded");
+	writeLog("Armour Material Loaded", ONE);
 
 	std::string unconvertedArmourType;
 	std::getline(armourFile, unconvertedArmourType);
@@ -89,7 +89,7 @@ void loadArmour(Armour& selectedArmourSlot)
 		break;
 	}
 
-	writeLog("Armour Type Loaded");
+	writeLog("Armour Type Loaded", ONE);
 
 	std::string unconvertedArmourQuality;
 	std::getline(armourFile, unconvertedArmourQuality);
@@ -98,14 +98,15 @@ void loadArmour(Armour& selectedArmourSlot)
 	convertedArmourQuality >> armourQuality;
 	selectedArmourSlot.armourQuality = armourQuality;
 
-	writeLog("Armour Quality Loaded");
+	writeLog("Armour Quality Loaded", ONE);
 
 	std::getline(armourFile, selectedArmourSlot.armourName);
 
-	writeLog("Armour Name Loaded");
+	writeLog("Armour Name Loaded", ONE);
 
 	armourFile.close();
-	writeLog("Armour File Closed");
+	writeLog("Armour File Closed", TWO);
+	defaultItemDirectory = "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Items/";
 }
 
 void loadItem(int iType) //iType is just item type but made different enough to be distinguishable
