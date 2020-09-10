@@ -9,7 +9,7 @@
 
 #include "logsAndExceptions.h"
 #include "itemHandler.h"
-//#include "Lesthallen RPG.h"
+#include "mainFile.h"
 
 inline std::string defaultCharacterFileDir = "C:/Users/LIAMF/Documents/C++ Projects/Learning C++/Character Files/";
 inline bool characterLoaded;
@@ -61,7 +61,7 @@ public:
 
 		characterLoaded = true;
 
-		writeLog("Character Created");
+		writeLog("Character Created", THREE);
 
 		saveCharacterDetails();
 	}
@@ -72,7 +72,7 @@ public:
 
 
 		std::ofstream characterFile(characterDirectory);
-		writeLog("Character File Opened");
+		writeLog("Character File Opened", TWO);
 		
 		//if you add more lines to the write to file, make sure to end each line with a newline
 		characterFile << characterName << "\n" << characterRace << "\n" << characterClass << "\n" << characterAge << "\n" << characterLevel << "\n" << characterExperience << "\n" << characterArmourHead.itemID << "\n";
@@ -80,19 +80,22 @@ public:
 
 		characterFile.close();
 
-		writeLog("Character Saved");
+		writeLog("Character Saved", TWO);
 
-		writeLog("Character File Close");
+		writeLog("Character File Close", TWO);
 		
 	}
-
+	
 	void loadCharacterDetails()
 	{
+		system("CLS");
+		printLogo(8, currentPath.append("/Debug/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
 		std::string characterDirectory = defaultCharacterFileDir.append(characterName).append(".txt");
 
 
 		std::ifstream characterFile(characterDirectory);
-		writeLog("Character File Opened");
+
+		characterLoaded = true;
 
 		if (characterFile.is_open() == false)
 		{
@@ -107,11 +110,18 @@ public:
 			else
 			{
 				std::cout << "Exiting\n";
+				writeLog("Game Exited", THREE);
 				return;
 			}
 		}
+		
+
+		
 
 		std::getline(characterFile, characterName);
+
+		writeLog("Character File Opened", TWO);
+
 		std::getline(characterFile, characterRace);
 		std::getline(characterFile, characterClass);
 
@@ -155,21 +165,24 @@ public:
 		loadArmour(characterArmourLegs);
 		loadArmour(characterArmourFeet);
 
-		writeLog("Character Loaded");
+		writeLog("Character Loaded", TWO);
 
 		printCharacterDetails();
 
-		characterLoaded = true;
+		
 
 		characterFile.close();
-		writeLog("Character File Closed");
+		writeLog("Character File Closed", TWO);
+		std::cin.get();
+		mainMenu();
 	}
 
 	void printCharacterDetails()
 	{
 		std::cout << "[Name] "<<characterName << "\n" << "[Race] " << characterRace << "\n" << "[Class] " << characterClass << "\n" << "[Age] " << characterAge << "\n" << "[Level] " << characterLevel << "\n" << "[XP] " << characterExperience << std::endl;;
 		std::cout << "[Head] " << characterArmourHead.armourName << "\n" << "[Torso] " << characterArmourTorso.armourName << "\n" << "[Legs] " << characterArmourLegs.armourName << "\n" << "[Feet] " << characterArmourFeet.armourName << std::endl;
-		writeLog("Character Details Printed");
+		std::cout << "Press enter to continue...";
+		writeLog("Character Details Printed", ONE);
 	}
 
 	void incrementCharacterXP(short modifier)
@@ -182,13 +195,13 @@ public:
 		characterExperience += modifier * 1;
 		std::string eventToLog{"Character Experience Incremented by: "};
 		eventToLog = eventToLog.append(std::to_string(characterExperience += modifier * 1));
-		writeLog(eventToLog);
+		writeLog(eventToLog, TWO);
 	}
 
 	void incrementCharacterLevel()
 	{
 		characterLevel++;
-		writeLog("Character Level Incremented");
+		writeLog("Character Level Incremented", TWO);
 	}
 
 

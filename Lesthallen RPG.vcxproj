@@ -163,6 +163,7 @@
     <ClInclude Include="itemHandler.h" />
     <ClInclude Include="Lesthallen RPG.h" />
     <ClInclude Include="logsAndExceptions.h" />
+    <ClInclude Include="mainFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

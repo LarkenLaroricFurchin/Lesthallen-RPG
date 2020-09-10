@@ -31,8 +31,7 @@ void loadArmour(Armour& selectedArmourSlot)
 	std::string directory = defaultItemDirectory.append(armour).append(convertedID).append(".txt");
 	
 	std::ifstream armourFile(directory);
-	std::cout << directory;
-	writeLog("Armour File Opened");
+	writeLog("Armour File Opened", TWO);
 
 	std::string unconvertedArmourMaterial; //converts the number thatrs read from the file into an actual integer
 	std::getline(armourFile, unconvertedArmourMaterial);
@@ -63,7 +62,7 @@ void loadArmour(Armour& selectedArmourSlot)
 		selectedArmourSlot.armourMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded");
+	writeLog("Armour Material Loaded", ONE);
 
 	std::string unconvertedArmourType;
 	std::getline(armourFile, unconvertedArmourType);
@@ -90,7 +89,7 @@ void loadArmour(Armour& selectedArmourSlot)
 		break;
 	}
 
-	writeLog("Armour Type Loaded");
+	writeLog("Armour Type Loaded", ONE);
 
 	std::string unconvertedArmourQuality;
 	std::getline(armourFile, unconvertedArmourQuality);
@@ -99,14 +98,14 @@ void loadArmour(Armour& selectedArmourSlot)
 	convertedArmourQuality >> armourQuality;
 	selectedArmourSlot.armourQuality = armourQuality;
 
-	writeLog("Armour Quality Loaded");
+	writeLog("Armour Quality Loaded", ONE);
 
 	std::getline(armourFile, selectedArmourSlot.armourName);
 
-	writeLog("Armour Name Loaded");
+	writeLog("Armour Name Loaded", ONE);
 
 	armourFile.close();
-	writeLog("Armour File Closed");
+	writeLog("Armour File Closed", TWO);
 	defaultItemDirectory = "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Items/";
 }
 

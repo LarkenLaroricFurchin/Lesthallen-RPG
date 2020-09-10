@@ -9,7 +9,7 @@
 
 	
 
-void writeLog(std::string eventToLog)
+void writeLog(std::string eventToLog, int logLevel)
 {
 	if (characterLoaded == false)
 	{
@@ -20,10 +20,13 @@ void writeLog(std::string eventToLog)
 		LogFile = logAndExceptionDirectory.append(playerCharacter.characterName).append("Log.txt");
 	}
 	
-	std::ofstream logFile(LogFile, std::ios::app);
-	std::string curTime = getTime();
-	eventToLog = (curTime).append("]  ").append(eventToLog);
-	logFile << "[" << eventToLog << "\n";
-	logFile.close();
+	if (logLevel >= systemLogLevel)
+	{
+		std::ofstream logFile(LogFile, std::ios::app);
+		std::string curTime = getTime();
+		eventToLog = (curTime).append("]  ").append(eventToLog);
+		logFile << "[" << eventToLog << "\n";
+		logFile.close();
+	}
 	logAndExceptionDirectory = "C:/Users/LIAMF/Documents/C++ Projects/Learning C++/Log/";
 }
