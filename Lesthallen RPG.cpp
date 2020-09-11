@@ -205,20 +205,6 @@ std::string convertDirectory(std::string pathToConvert, char replace, char repla
     return pathToConvert;
 }
 
-std::string getSystemPath(_In_ int csidl)
-{
-    WCHAR szPath[_MAX_PATH]; //wide char sodding array
-    SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szPath); //1st: . 2nd: folder path to be retrieved. 3rd: a folder access token, set to NULL. 4th:specifies that path to be returned. 5th:pszPath receives the path that was asked for.
-
-    //some weird voodoo to covnert from sodding WCHAR to Char, to string.
-    char ch[260]; //narrow char array, me likey
-    char DefChar = ' '; //no clue what this bit is for
-    WideCharToMultiByte(CP_ACP, 0, szPath, -1, ch, 260, &DefChar, NULL); //does the weird converting
-    std::string convertedPath{ ch }; //converts the narrow char to a string!!
-
-    return convertedPath;
-}
-
 
 std::string replaceWordInString(std::string stringToEdit, std::string replace, int lengthOfWordToReplace, std::string replaceWith)
 {
@@ -229,74 +215,7 @@ std::string replaceWordInString(std::string stringToEdit, std::string replace, i
     return stringToEdit;
 }
 
-/*
-void createDirectories()
-{
-    std::string convertedPath = getSystemPath(CSIDL_APPDATA);
 
-    convertedPath = convertDirectory(convertedPath, '\\', '/');
-
-    convertedPath = replaceWordInString(convertedPath, "Roaming", 7, "Local");
-
-    std::string path{ "/Lesthallen RPG/" };
-    convertedPath += path; 
-
-    //char gameDirectory[1024];//The final path that can be used to create the rest of the directories
-    //strncpy(gameDirectory, convertedPath.c_str(), sizeof(gameDirectory)); //(source, destination, size); copies the "convertedPath" string into the char array "gameDirectory" because _mkdir wants to be a fiend
-
-    if (fs::exists(convertedPath))//create the main directory
-    {
-        writeLog("Directory [" + convertedPath + "] Already Exists!", ONE);
-    }
-    else
-    {
-        fs::create_directory(convertedPath);
-        writeLog("Attempting to create [" + convertedPath + "]", ONE);
-        if (fs::exists(convertedPath))
-        {
-            writeLog("Directory [" + convertedPath + "] Created Sucessfully", ONE);
-        }
-        else
-        {
-            writeLog("Directory [" + convertedPath + "] Failed to be created. You may not have the correct permissions!", ONE);
-        }
-    }
-
-    convertedPath += "Saves";
-
-    if (fs::exists(convertedPath))//create the main directory
-    {
-        writeLog("Directory [" + convertedPath + "] Already Exists!", ONE);
-    }
-    else
-    {
-        fs::create_directory(convertedPath);
-        writeLog("Attempting to create [" + convertedPath + "]", ONE);
-        if (fs::exists(convertedPath))
-        {
-            writeLog("Directory [" + convertedPath + "] Created Sucessfully", ONE);
-        }
-        else
-        {
-            writeLog("Directory [" + convertedPath + "] Failed to be created. You may not have the correct permissions!", ONE);
-        }
-    }
-
-    /*
-    int createDirResult = _mkdir(gameDirectory);//creates the base game directory where the other directories will be places
-    if (createDirResult == 0) //if the directory was created then it will return 0, otherwise it returns -1
-    {
-        writeLog("Directory created successfully", ONE);
-    }
-    else if (createDirResult == -1)
-    {
-        writeLog("Directory failed to be created!", ONE);
-    }
-
-    char gameSavesDirectory[1024];
-    
-}
-*/
 void credits()
 {
     printLogo(35, creditsFile, false);
