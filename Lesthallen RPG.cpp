@@ -13,6 +13,8 @@
 #include "Lesthallen RPG.h"
 #include "characterOperations.h"
 #include "logsAndExceptions.h"
+#include "gameWorldManager.h"
+#include "currentGame.h"
 
 void mainMenu();
 
@@ -27,7 +29,7 @@ void printLogo(int lines, std::string logoDir, bool animated)
 
     if (logoFile.is_open())
     {
-        writeLog("Logo File [" + currentASSetting + "] Opened", TWO);
+        writeLog("Logo File [" + logoDir + "] Opened", TWO);
 
         std::string line{};
         int i;
@@ -61,7 +63,7 @@ void printLogo(int lines, std::string logoDir, bool animated)
         logoFile.close();
         if (logoFile.is_open() == false)
         {
-            writeLog("Logo File [" + currentASSetting + "] Closed", 2);
+            writeLog("Logo File [" + logoDir + "] Closed", 2);
         }
         else
         {
@@ -72,7 +74,7 @@ void printLogo(int lines, std::string logoDir, bool animated)
     else
     {
         std::cout << "Error!! File failed to open! Returning to Main Menu...\n";
-        writeLog("File [" + currentASSetting + "] Failed to open", TWO);
+        writeLog("File [" + logoDir + "] Failed to open", TWO);
         _sleep(1500);
         mainMenu();
     }
@@ -118,8 +120,8 @@ void settingsMenuAutoSave()
         autoSave = true;
         writeLog("Settings Auto Save Turned On", 2);
         system("CLS");
-        currentASSetting = "Settings1On";
-        printLogo(21, "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Main Menu/Settings/Settings 1/Settings1On.txt", false);
+        currentASSetting = "/Settings1On";
+        printLogo(21, settingsAutoSaveDirectoryOn, false);
         settingsMenuAutoSave();
     }
     else if (userInput == "Off" || userInput == "off")
@@ -127,8 +129,8 @@ void settingsMenuAutoSave()
         autoSave = false;
         writeLog("Settings Auto Save Turned Off", 2);
         system("CLS");
-        currentASSetting = "Settings1Off";
-        printLogo(21, "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Main Menu/Settings/Settings 1/Settings1Off.txt", false);
+        currentASSetting = "/Settings1Off";
+        printLogo(21, settingsAutoSaveDirectoryOff, false);
         settingsMenuAutoSave();
     }
     else if (userInput == "Back" || userInput == "back")
@@ -139,7 +141,7 @@ void settingsMenuAutoSave()
     {
         writeLog("Incorrect Input in Settings Auto Save", 2);
         system("CLS");
-        printLogo(21, "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Main Menu/Settings/Settings 1/Settings1Error.txt", false);
+        printLogo(21, settingsAutoSaveDirectoryError, false);
         _sleep(1500);
 
         settingsMenuAutoSave();
@@ -153,12 +155,96 @@ void checkAutoSaveStatus()
 
 void settingsMenuSaveGameHistory()
 {
+    std::string userInput{};
+    std::getline(std::cin, userInput);
 
+    if (userInput == "On" || userInput == "on")
+    {
+        saveGameHistory = true;
+        writeLog("Settings Save Game History Turned On", 2);
+        system("CLS");
+        currentSGHSetting = "/Settings2On";
+        printLogo(21, settingsSaveGameHistoryDirectoryOn, false);
+        settingsMenuSaveGameHistory();
+    }
+    else if (userInput == "Off" || userInput == "off")
+    {
+        saveGameHistory = false;
+        writeLog("Settings Save Game History Turned Off", 2);
+        system("CLS");
+        currentSGHSetting = "/Settings2Off";
+        printLogo(21, settingsSaveGameHistoryDirectoryOff, false);
+        settingsMenuSaveGameHistory();
+    }
+    else if (userInput == "Back" || userInput == "back")
+    {
+        settingsMenu();
+    }
+    else
+    {
+        writeLog("Incorrect Input in Settings Save Game History", 2);
+        system("CLS");
+        printLogo(21, settingsSaveGameHistoryDirectoryError, false);
+        _sleep(1500);
+
+        settingsMenuSaveGameHistory();
+    }
 }
 
 void settingsMenuGameLoggingLevel()
 {
+    std::string userInput{};
+    std::getline(std::cin, userInput);
 
+    if (userInput == "Low" || userInput == "low")
+    {
+        systemLogLevel = 3;
+        writeLog("Settings Game Logging Level Set To Low", 2);
+        system("CLS");
+        currentSGHSetting = "/Settings3Low";
+        printLogo(23, settingsGameLoggingLevelDirectoryLow, false);
+        settingsMenuGameLoggingLevel();
+    }
+    else if (userInput == "Medium" || userInput == "medium")
+    {
+        systemLogLevel = 2;
+        writeLog("Settings Game Logging Level Set To Medium", 2);
+        system("CLS");
+        currentSGHSetting = "/Settings3Medium";
+        printLogo(23, settingsGameLoggingLevelDirectoryMedium, false);
+        settingsMenuGameLoggingLevel();
+    }
+    else if (userInput == "High" || userInput == "high")
+    {
+        systemLogLevel = 1;
+        writeLog("Settings Game Logging Level Set To High", 2);
+        system("CLS");
+        currentSGHSetting = "/Settings3High";
+        printLogo(23, settingsGameLoggingLevelDirectoryHigh, false);
+        settingsMenuGameLoggingLevel();
+    }
+    else if (userInput == "Off" || userInput == "off")
+    {
+        systemLogLevel = 4;
+        writeLog("Settings Game Logging Level Set To Off", 2);
+        system("CLS");
+        currentSGHSetting = "/Settings3Off";
+        printLogo(23, settingsSaveGameHistoryDirectoryOff, false);
+        settingsMenuGameLoggingLevel();
+    }
+    else if (userInput == "Back" || userInput == "back")
+    {
+        settingsMenu();
+    }
+    else
+    {
+        writeLog("Incorrect Input in Settings Game Logging Level", 2);
+        system("CLS");
+        printLogo(23, settingsGameLoggingLevelDirectoryError, false);
+        _sleep(1500);
+
+        settingsMenuGameLoggingLevel();
+    }
 }
 
 
@@ -180,17 +266,20 @@ void settingsMenu()
     case 1:
         writeLog("Settings Auto Save Selected", TWO);
         system("CLS");
-        //std::cout << settingsAutoSaveDirectory.append(currentASSetting);
-        std::cout << settingsAutoSaveDirectory;
-        std::cout << currentASSetting;
         std::cin.get();
         printLogo(21, settingsAutoSaveDirectory.append(currentASSetting), false); //currentASSetting is in "Lesthallen RPG.h"
         settingsMenuAutoSave();
         break;
     case 2:
+        writeLog("Settings Save Game History Selected", TWO);
+        system("CLS");
+        printLogo(21, settingsSaveGameHistoryDirectory.append(currentSGHSetting), false);
         settingsMenuSaveGameHistory();
         break;
     case 3:
+        writeLog("Settings Game Logging Level Selected", TWO);
+        system("CLS");
+        printLogo(23, settingsGameLoggingLevelDirectory.append(currentGLLSetting), false);
         settingsMenuGameLoggingLevel();
         break;
     case 4://if they choose Back
@@ -229,6 +318,7 @@ void setDirectories()
     //set the games directories to the current location of the .exe
     //SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
     currentPath = convertDirectory(currentPath, '\\', '/');
+    saveGamePath = currentPath + "/Lesthallen RPG/Saves";
     logoMainDirectory = currentPath + "/Lesthallen RPG/Main Menu/LOGO.txt";
 
     //settings
@@ -253,11 +343,10 @@ void setDirectories()
     settingsGameLoggingLevelDirectoryHigh = settingsGameLoggingLevelDirectory + "/Settings3High.txt";
     settingsGameLoggingLevelDirectoryMedium = settingsGameLoggingLevelDirectory + "/Settings3Medium.txt";
     settingsGameLoggingLevelDirectoryLow = settingsGameLoggingLevelDirectory + "/Settings3Low.txt";
+    settingsGameLoggingLevelDirectoryOff = settingsGameLoggingLevelDirectory + "/Settings3Off.txt";
 
 
     creditsFile = currentPath + "/Lesthallen RPG/Main Menu/Credits.txt";
-    std::cout << creditsFile;
-    std::cin.get();
     gameStartUp = false;
 }
 
@@ -277,18 +366,14 @@ void mainMenu()
     system("CLS");
     printLogo(20, logoMainDirectory, true);
 
-    int userInput{ 1 };
-    std::string uInput;
-    std::getline(std::cin, uInput);
-    std::stringstream convertedInput(uInput);
-    convertedInput >> userInput;
+    int userInput = stringToInteger();
 
     switch (userInput)
     {
     case 1:
         writeLog("New Game Selected", THREE);
         system("CLS");
-        playerCharacter.characterCreation();
+        currentGame.newGame();
         break;
     case 2:
         writeLog("Load Game Selected", THREE);
@@ -309,6 +394,16 @@ void mainMenu()
         exit(0);
         
     }
+}
+
+void newGame()
+{
+
+}
+
+void loadGame()
+{
+
 }
 
 int main()

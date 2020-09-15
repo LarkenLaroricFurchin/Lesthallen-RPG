@@ -10,8 +10,9 @@
 #include "logsAndExceptions.h"
 #include "itemHandler.h"
 #include "mainFile.h"
+#include "conversionFunctions.h"
 
-inline std::string defaultCharacterFileDir = "C:/Users/LIAMF/Documents/C++ Projects/Learning C++/Character Files/";
+inline std::string defaultCharacterFileDir = currentPath + "/Lesthallen RPG/CharacterFiles/";
 inline bool characterLoaded;
 
 
@@ -37,18 +38,19 @@ public:
 	{
 		std::cout << "Enter characters name: ";
 		std::getline(std::cin, characterName);
+		system("CLS");
 
-		std::cout << "Enter characters race: ";
+		std::cout << "Choose your race:\n" << "[Human]\n" << "[Lesthallen]\n" << "[MM]:";
 		std::getline(std::cin, characterRace);
+		system("CLS");
 
-		std::cout << "Enter characters class: ";
+		std::cout << "Choose your class:\n" << "[Sorcerer]\n" << "[Wizard]\n" << "[Druid]\n" << "[Bounty Hunter]\n" << "[Hunter]\n" << "[Cleric]\n" << "[Rogue]\n" << "[MM]:";
 		std::getline(std::cin, characterClass);
+		system("CLS");
 
 		std::cout << "Enter characters age: ";
-		std::string age;
-		std::getline(std::cin, age);
-		std::stringstream convertedAge(age); //stringstream converts integers within a string into actual integers
-		convertedAge >> characterAge;		 //you have to access a stringstream the same way you access std::cin
+		characterAge = stringToInteger();
+		system("CLS");
 
 		characterExperience = 0;
 
@@ -68,11 +70,18 @@ public:
 
 	void saveCharacterDetails()
 	{
-		std::string characterDirectory = defaultCharacterFileDir.append(characterName).append(".txt"); //using .append() because just doing "string + string" is a big no no in classes.
+		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt"; //using .append() because just doing "string + string" is a big no no in classes.
 
 
 		std::ofstream characterFile(characterDirectory);
-		writeLog("Character File Opened", TWO);
+		if (characterFile.is_open())
+		{
+			writeLog("Character File Opened", TWO);
+		}
+		else
+		{
+			writeLog("Character File Failed To Open!", TWO);
+		}
 		
 		//if you add more lines to the write to file, make sure to end each line with a newline
 		characterFile << characterName << "\n" << characterRace << "\n" << characterClass << "\n" << characterAge << "\n" << characterLevel << "\n" << characterExperience << "\n" << characterArmourHead.itemID << "\n";
@@ -89,8 +98,8 @@ public:
 	void loadCharacterDetails()
 	{
 		system("CLS");
-		printLogo(8, currentPath.append("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
-		std::string characterDirectory = defaultCharacterFileDir.append(characterName).append(".txt");
+		printLogo(8, currentPath + ("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
+		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt";
 
 
 		std::ifstream characterFile(characterDirectory);
@@ -182,7 +191,7 @@ public:
 		std::cout << "[Name] "<<characterName << "\n" << "[Race] " << characterRace << "\n" << "[Class] " << characterClass << "\n" << "[Age] " << characterAge << "\n" << "[Level] " << characterLevel << "\n" << "[XP] " << characterExperience << std::endl;;
 		std::cout << "[Head] " << characterArmourHead.armourName << "\n" << "[Torso] " << characterArmourTorso.armourName << "\n" << "[Legs] " << characterArmourLegs.armourName << "\n" << "[Feet] " << characterArmourFeet.armourName << std::endl;
 		std::cout << "Press enter to continue...";
-		writeLog("Character Details Printed", ONE);
+		writeLog("Character Details Printed", TWO);
 	}
 
 	void incrementCharacterXP(short modifier)

@@ -152,6 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="characterOperations.cpp" />
+    <ClCompile Include="conversionFunctions.cpp" />
+    <ClCompile Include="gameWorldManager.cpp" />
     <ClCompile Include="getTime.cpp" />
     <ClCompile Include="itemHandler.cpp" />
     <ClCompile Include="Lesthallen RPG.cpp" />
@@ -159,6 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="characterOperations.h" />
+    <ClInclude Include="conversionFunctions.h" />
+    <ClInclude Include="currentGame.h" />
+    <ClInclude Include="gameWorldManager.h" />
     <ClInclude Include="getTime.h" />
     <ClInclude Include="itemHandler.h" />
     <ClInclude Include="Lesthallen RPG.h" />
