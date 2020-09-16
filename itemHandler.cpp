@@ -38,7 +38,7 @@ void loadArmour(Armour& selectedArmourSlot)
 	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
 	
 	std::ifstream armourFile(directory);
-	writeLog("Armour File Opened", TWO);
+	writeLog("Armour File [" + directory + "] Opened", TWO);
 
 	std::string unconvertedArmourMaterial; //converts the number thatrs read from the file into an actual integer
 	std::getline(armourFile, unconvertedArmourMaterial);
@@ -112,7 +112,7 @@ void loadArmour(Armour& selectedArmourSlot)
 	writeLog("Armour Name Loaded", ONE);
 
 	armourFile.close();
-	writeLog("Armour File Closed", TWO);
+	writeLog("Armour File [" + directory + "] Closed", TWO);
 	//defaultItemDirectory = currentPath + "/Lesthallen RPG/Items";
 }
 
