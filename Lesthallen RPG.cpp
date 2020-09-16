@@ -384,6 +384,7 @@ void mainMenu()
         currentGame.displayGameStats();
         
         std::cin.get();
+        mainMenu();
         break;
     case 3:
         writeLog("Settings Selected", THREE);
