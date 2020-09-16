@@ -40,13 +40,54 @@ public:
 		std::getline(std::cin, characterName);
 		system("CLS");
 
-		std::cout << "Choose your race:\n" << "[Human]\n" << "[Lesthallen]\n" << "[MM]:";
-		std::getline(std::cin, characterRace);
+		std::cout << "Choose your race:\n" << "[1][Human]\n" << "[2][Lesthallen]\n" << "[MM]:";
+
+		int UserInput = stringToInteger();
+
+		switch (UserInput)
+		{
+		case 1:
+			characterRace = "Human";
+			break;
+		case 2:
+			characterRace = "Lesthallen";
+			break;
+		}
+
 		system("CLS");
 
-		std::cout << "Choose your class:\n" << "[Sorcerer]\n" << "[Wizard]\n" << "[Druid]\n" << "[Bounty Hunter]\n" << "[Hunter]\n" << "[Cleric]\n" << "[Rogue]\n" << "[MM]:";
-		std::getline(std::cin, characterClass);
+
+		std::cout << "Choose your class:\n" << "[1][Sorcerer]\n" << "[2][Wizard]\n" << "[3][Druid]\n" << "[4][Bounty Hunter]\n" << "[5][Hunter]\n" << "[6][Cleric]\n" << "[7][Rogue]\n" << "[MM]:";
+
+		UserInput = stringToInteger();
+
+		switch (UserInput)
+		{
+		case 1:
+			characterClass = "Sorcerer";
+			break;
+		case 2:
+			characterClass = "Wizard";
+			break;
+		case 3:
+			characterClass = "Druid";
+			break;
+		case 4:
+			characterClass = "Bounty Hunter";
+			break;
+		case 5:
+			characterClass = "Hunter";
+			break;
+		case 6:
+			characterClass = "Cleric";
+			break;
+		case 7:
+			characterClass = "Rogue";
+			break;
+		}
+
 		system("CLS");
+
 
 		std::cout << "Enter characters age: ";
 		characterAge = stringToInteger();
@@ -57,9 +98,17 @@ public:
 		characterLevel = 0;
 
 		characterArmourHead.itemID = 100;
+		loadArmour(characterArmourHead);
+
 		characterArmourTorso.itemID = 101;
+		loadArmour(characterArmourTorso);
+
 		characterArmourLegs.itemID = 102;
+		loadArmour(characterArmourLegs);
+
 		characterArmourFeet.itemID = 103;
+		loadArmour(characterArmourFeet);
+		
 
 		characterLoaded = true;
 

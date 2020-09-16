@@ -14,7 +14,7 @@ class GameWorldManager
 {
 private:
 	std::string gameSaveName{"Default Save"};
-	std::string gameSaveDirectory{saveGamePath.append("/Default")};
+	std::string gameSaveDirectory{currentPath};
 	std::string characterUsed{"Liam Feasey"};
 	std::string currentLocation{"Somewhere"};
 public:
@@ -28,7 +28,7 @@ public:
 		std::getline(std::cin, gameSaveName);
 		writeLog("Game Save Name Entered", THREE);
 
-		gameSaveDirectory = gameSaveDirectory.append("/Lesthallen RPG/Saves/" + gameSaveName);
+		gameSaveDirectory = gameSaveDirectory + "/Lesthallen RPG/Saves/" + gameSaveName;
 
 		system("CLS");
 		std::cout << "Use previously created character?(Y/N): ";
@@ -58,6 +58,7 @@ public:
 		saveGame();
 		displayGameStats();
 		std::cin.get();
+		mainMenu();
 
 		//call the directory creation function for "gameSaveName", and characterUsed
 		//Call the file creation function for "gameSaveName"
@@ -114,9 +115,18 @@ public:
 	void saveGame()
 	{
 		std::ofstream gameSaveFile(gameSaveDirectory + "/world.txt");
-		writeLog("Game Save File Opened", TWO);
 
-		gameSaveFile << characterUsed << currentLocation;
+		if (!gameSaveFile.is_open())
+		{
+			writeLog("Game Save File Failed To Open!", TWO);
+		}
+		else
+		{
+			writeLog("Game Save File Opened", TWO);
+		}
+		
+
+		gameSaveFile << characterUsed << std::endl << currentLocation;
 
 		gameSaveFile.close();
 		

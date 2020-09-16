@@ -21,14 +21,21 @@ enum ItemType
 };
 
 
-std::string defaultItemDirectory{ "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Items/" };
-std::string armour{ "Armour/" };
+std::string defaultItemDirectory{ currentPath + "/Lesthallen RPG/Items" };
+std::string armour{ "/Armour/" };
+std::string food{ "/Food/" };
+std::string Ingredients{ "/Ingredients/" };
+std::string magicItems{ "/Magic Items/" };
+std::string potions{ "/Potions/" };
+std::string scrolls{ "/Scrolls/" };
+std::string shields{ "/Shields/" };
+std::string weapons{ "/Weapons/" };
 
 void loadArmour(Armour& selectedArmourSlot)
 {
 	int armourID = selectedArmourSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
 	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory.append(armour).append(convertedID).append(".txt");
+	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
 	
 	std::ifstream armourFile(directory);
 	writeLog("Armour File Opened", TWO);
@@ -38,8 +45,6 @@ void loadArmour(Armour& selectedArmourSlot)
 	std::stringstream convertedMaterial(unconvertedArmourMaterial);
 	int armourMaterial;
 	convertedMaterial >> armourMaterial;
-
-	
 
 	switch(armourMaterial)
 	{
@@ -63,6 +68,7 @@ void loadArmour(Armour& selectedArmourSlot)
 		break;
 	}
 	writeLog("Armour Material Loaded", ONE);
+
 
 	std::string unconvertedArmourType;
 	std::getline(armourFile, unconvertedArmourType);
@@ -91,6 +97,7 @@ void loadArmour(Armour& selectedArmourSlot)
 
 	writeLog("Armour Type Loaded", ONE);
 
+
 	std::string unconvertedArmourQuality;
 	std::getline(armourFile, unconvertedArmourQuality);
 	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
@@ -106,12 +113,12 @@ void loadArmour(Armour& selectedArmourSlot)
 
 	armourFile.close();
 	writeLog("Armour File Closed", TWO);
-	defaultItemDirectory = "C:/Users/LIAMF/Documents/C++ Projects/Lesthallen/Items/";
+	//defaultItemDirectory = currentPath + "/Lesthallen RPG/Items";
 }
 
-void loadItem(int iType) //iType is just item type but made different enough to be distinguishable
+void loadItem(int itemType)
 {
-	switch(iType)
+	switch(itemType)
 	{
 	case 0:
 		std::cout << "WEAPON";
