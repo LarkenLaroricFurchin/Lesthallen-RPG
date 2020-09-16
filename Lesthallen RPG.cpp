@@ -379,8 +379,9 @@ void mainMenu()
         writeLog("Load Game Selected", THREE);
         system("CLS");
 
-        playerCharacter.characterName = getUserInput("Enter characters name: ");
-        playerCharacter.loadCharacterDetails();
+        currentGame.loadGame();
+        system("CLS");
+        currentGame.displayGameStats();
         
         std::cin.get();
         break;

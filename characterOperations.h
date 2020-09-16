@@ -146,8 +146,7 @@ public:
 	
 	void loadCharacterDetails()
 	{
-		system("CLS");
-		printLogo(8, currentPath + ("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
+		//printLogo(8, currentPath + ("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
 		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt";
 
 
@@ -225,14 +224,8 @@ public:
 
 		writeLog("Character Loaded", TWO);
 
-		printCharacterDetails();
-
-		
-
 		characterFile.close();
 		writeLog("Character File Closed", TWO);
-		std::cin.get();
-		mainMenu();
 	}
 
 	void printCharacterDetails()

@@ -102,6 +102,21 @@ public:
 		system("CLS");
 		
 		std::cout << "Enter Game Save Name: ";
+
+		std::getline(std::cin, gameSaveName);
+
+		gameSaveDirectory = gameSaveDirectory + "/Lesthallen RPG/Saves/" + gameSaveName;
+
+		std::ifstream gameSaveFile(gameSaveDirectory + "/world.txt");
+		writeLog("Game Save File [" + gameSaveDirectory + "] Opened", TWO);
+
+		std::getline(gameSaveFile, characterUsed);
+		std::getline(gameSaveFile, currentLocation);
+		
+		gameSaveFile.close();
+		writeLog("Game Save File [" + gameSaveDirectory + "] Closed", TWO);
+
+		playerCharacter.characterName = characterUsed;
 	}
 
 	void displayGameStats()
@@ -109,6 +124,7 @@ public:
 		printLogo(8, currentPath + "/Lesthallen RPG/GameStats.txt", false);
 		std::cout << "Game Save Used: " << gameSaveName << "\n" << "Character Used: " << characterUsed << "\n" << "Current Location: " << currentLocation << std::endl;
 		writeLog("Game Stats Printed", TWO);
+		playerCharacter.loadCharacterDetails();
 		playerCharacter.printCharacterDetails();
 	}
 
