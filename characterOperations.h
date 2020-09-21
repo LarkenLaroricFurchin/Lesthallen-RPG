@@ -29,10 +29,10 @@ public:
 	short characterLevel{ 0 };
 	int characterExperience{ 0 };
 
-	Armour characterArmourHead{};
-	Armour characterArmourTorso{};
-	Armour characterArmourLegs{};
-	Armour characterArmourFeet{};
+	Item characterArmourHead{};
+	Item characterArmourTorso{};
+	Item characterArmourLegs{};
+	Item characterArmourFeet{};
 
 	void characterCreation() //gets user input to create a new character
 	{
@@ -42,7 +42,7 @@ public:
 
 		std::cout << "Choose your race:\n" << "[1][Human]\n" << "[2][Lesthallen]\n" << "[MM]:";
 
-		int UserInput = stringToInteger();
+		int UserInput = stringToIntegerGL();
 
 		switch (UserInput)
 		{
@@ -59,7 +59,7 @@ public:
 
 		std::cout << "Choose your class:\n" << "[1][Sorcerer]\n" << "[2][Wizard]\n" << "[3][Druid]\n" << "[4][Bounty Hunter]\n" << "[5][Hunter]\n" << "[6][Cleric]\n" << "[7][Rogue]\n" << "[MM]:";
 
-		UserInput = stringToInteger();
+		UserInput = stringToIntegerGL();
 
 		switch (UserInput)
 		{
@@ -90,7 +90,7 @@ public:
 
 
 		std::cout << "Enter characters age: ";
-		characterAge = stringToInteger();
+		characterAge = stringToIntegerGL();
 		system("CLS");
 
 		characterExperience = 0;
@@ -231,7 +231,7 @@ public:
 	void printCharacterDetails()
 	{
 		std::cout << "[Name] "<<characterName << "\n" << "[Race] " << characterRace << "\n" << "[Class] " << characterClass << "\n" << "[Age] " << characterAge << "\n" << "[Level] " << characterLevel << "\n" << "[XP] " << characterExperience << std::endl;;
-		std::cout << "[Head] " << characterArmourHead.armourName << "\n" << "[Torso] " << characterArmourTorso.armourName << "\n" << "[Legs] " << characterArmourLegs.armourName << "\n" << "[Feet] " << characterArmourFeet.armourName << std::endl;
+		std::cout << "[Head] " << characterArmourHead.itemName << "\n" << "[Torso] " << characterArmourTorso.itemName << "\n" << "[Legs] " << characterArmourLegs.itemName << "\n" << "[Feet] " << characterArmourFeet.itemName << std::endl;
 		std::cout << "Press enter to continue...";
 		writeLog("Character Details Printed", TWO);
 	}

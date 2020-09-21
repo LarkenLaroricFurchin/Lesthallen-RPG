@@ -70,7 +70,7 @@ public:
 		std::cout << "Choose your start location:\n" << "[1][G.L.E]\n" << "[2][R.L.E]\n" << "[3][B.L.E]\n" << "[MM]:";
 		
 
-		int userInput = stringToInteger();
+		int userInput = stringToIntegerGL();
 
 		if (userInput > 3)
 		{

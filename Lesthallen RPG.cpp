@@ -366,7 +366,7 @@ void mainMenu()
     system("CLS");
     printLogo(20, logoMainDirectory, true);
 
-    int userInput = stringToInteger();
+    int userInput = stringToIntegerGL();
 
     switch (userInput)
     {

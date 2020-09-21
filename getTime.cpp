@@ -1,6 +1,7 @@
 #include <string>
 #include <ctime>
 #include <chrono>
+#include <random>
 #include "getTime.h"
 
 std::string getTime()
@@ -23,3 +24,4 @@ std::string getTime()
 	return finalTime;
 	*/
 }
+

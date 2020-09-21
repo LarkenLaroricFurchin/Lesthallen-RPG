@@ -1,4 +1,5 @@
 #ifndef CONVERSIONFUNCTIONS
 #define CONVERSIONFUNCTIONS
-int stringToInteger();
+int stringToIntegerGL();
+int stringToInteger(std::string stringToConvert);
 #endif
