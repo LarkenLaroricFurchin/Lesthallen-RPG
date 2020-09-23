@@ -29,10 +29,17 @@ public:
 	short characterLevel{ 0 };
 	int characterExperience{ 0 };
 
+	short maxInventorySize{10};//max 40
+
 	Item characterArmourHead{};
 	Item characterArmourTorso{};
 	Item characterArmourLegs{};
 	Item characterArmourFeet{};
+
+	Item primarySlot{};
+	Item secondarySlot{};
+
+	Item inventory[40]{ primarySlot, secondarySlot, characterArmourHead, characterArmourTorso, characterArmourLegs, characterArmourFeet };
 
 	void characterCreation() //gets user input to create a new character
 	{
@@ -97,18 +104,30 @@ public:
 
 		characterLevel = 0;
 
-		characterArmourHead.itemID = 100;
-		loadArmour(characterArmourHead);
+		characterArmourHead.itemID = 1000;
 
-		characterArmourTorso.itemID = 101;
-		loadArmour(characterArmourTorso);
+		characterArmourTorso.itemID = 1001;
 
-		characterArmourLegs.itemID = 102;
-		loadArmour(characterArmourLegs);
+		characterArmourLegs.itemID = 1002;
 
-		characterArmourFeet.itemID = 103;
-		loadArmour(characterArmourFeet);
+		characterArmourFeet.itemID = 1003;
+
+		primarySlot.itemID = 8000;
+
+		secondarySlot.itemID = 7000;
 		
+		int i{};
+
+		/*
+		for (i = 6; i <= 39 - 1; i++)
+		{
+			inventory[i].itemID = 0;
+		}
+		*/
+		for (i = 0; i <= maxInventorySize - 1; i++)
+		{
+			loadItem(inventory[i]);
+		}
 
 		characterLoaded = true;
 
@@ -133,8 +152,14 @@ public:
 		}
 		
 		//if you add more lines to the write to file, make sure to end each line with a newline
-		characterFile << characterName << "\n" << characterRace << "\n" << characterClass << "\n" << characterAge << "\n" << characterLevel << "\n" << characterExperience << "\n" << characterArmourHead.itemID << "\n";
-		characterFile << characterArmourTorso.itemID << "\n" << characterArmourLegs.itemID << "\n" << characterArmourFeet.itemID;
+		characterFile << characterName << "\n" << characterRace << "\n" << characterClass << "\n" << characterAge << "\n" << characterLevel << "\n" << characterExperience << "\n" << primarySlot.itemID << "\n" << secondarySlot.itemID << "\n";
+		characterFile << characterArmourHead.itemID << "\n" << characterArmourTorso.itemID << "\n" << characterArmourLegs.itemID << "\n" << characterArmourFeet.itemID << "\n";
+
+		int i{};//saves the inventory to the character file
+		for (i = 6; i <= maxInventorySize - 1; i++)
+		{//primary weapon = slot 0, secondary weapon = slot 1, armour pieces = slots 2-5, everything else is slots 6-39
+			characterFile << inventory[i].itemID << "\n";
+		}
 
 		characterFile.close();
 
@@ -196,6 +221,16 @@ public:
 		std::getline(characterFile, xp);
 		std::stringstream convertedXp(xp);
 		convertedXp >> characterExperience;
+		/*
+		std::string primaryWeaponID;
+		std::getline(characterFile, primaryWeaponID);
+		std::stringstream convertedPrimaryWeaponID(primaryWeaponID);
+		convertedPrimaryWeaponID >> primarySlot.itemID;
+
+		std::string secondaryWeaponID;
+		std::getline(characterFile, secondaryWeaponID);
+		std::stringstream convertedSecondaryWeaponID(secondaryWeaponID);
+		convertedSecondaryWeaponID >> secondarySlot.itemID;
 
 		std::string headArmourID;
 		std::getline(characterFile, headArmourID);
@@ -216,11 +251,18 @@ public:
 		std::getline(characterFile, feetArmourID);
 		std::stringstream convertedFeetID(feetArmourID);
 		convertedFeetID >> characterArmourFeet.itemID;
-		
-		loadArmour(characterArmourHead);
-		loadArmour(characterArmourTorso);
-		loadArmour(characterArmourLegs);
-		loadArmour(characterArmourFeet);
+		*/
+
+		int i{};
+		for (i = 0; i <= maxInventorySize - 1; i++)
+		{
+			int currentItemID;
+			std::string currentUnconvertedItemID{};
+			std::getline(characterFile, currentUnconvertedItemID);
+			currentItemID = stringToInteger(currentUnconvertedItemID);
+			inventory[i].itemID = currentItemID;
+			loadItem(inventory[i]);
+		}
 
 		writeLog("Character Loaded", TWO);
 
@@ -231,7 +273,13 @@ public:
 	void printCharacterDetails()
 	{
 		std::cout << "[Name] "<<characterName << "\n" << "[Race] " << characterRace << "\n" << "[Class] " << characterClass << "\n" << "[Age] " << characterAge << "\n" << "[Level] " << characterLevel << "\n" << "[XP] " << characterExperience << std::endl;;
-		std::cout << "[Head] " << characterArmourHead.itemName << "\n" << "[Torso] " << characterArmourTorso.itemName << "\n" << "[Legs] " << characterArmourLegs.itemName << "\n" << "[Feet] " << characterArmourFeet.itemName << std::endl;
+		std::cout << "[Head] " << characterArmourHead.itemName << "\n" << "[Torso] " << characterArmourTorso.itemName << "\n" << "[Legs] " << characterArmourLegs.itemName << "\n" << "[Feet] " << characterArmourFeet.itemName << "\n";
+		std::cout << "[Primary Slot] " << primarySlot.itemName << "\n" << "[Secondary Slot] " << secondarySlot.itemName << std::endl;
+		int i{};
+		for (i = 6; i <= maxInventorySize - 1; i++)
+		{
+			std::cout << "[Inventory Slot " << i << "] " << inventory[i].itemName << "\n";
+		}
 		std::cout << "Press enter to continue...";
 		writeLog("Character Details Printed", TWO);
 	}

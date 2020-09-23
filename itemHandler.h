@@ -11,6 +11,7 @@ std::string getItemClass(int itemScore);
 
 enum class Materials //the values of these materials will be used to calculate the stats of items created using them
 {
+	EMPTY = 0,
 	CLOTH = 1,
 	PAPER = 1,
 	GLASS = 1,
@@ -23,17 +24,9 @@ enum class Materials //the values of these materials will be used to calculate t
 	COMPOSITE = 50,
 };
 
-enum class ArmourType
-{
-	PLAIN = 1,
-	PADDED = 5,
-	STUDDED = 10,
-	CHAINMAIL = 25,
-	PLATEMAIL = 40,
-};
-
 enum class ItemType
 {
+	EMPTY = 0,
 	POTION = 1,
 	FOOD = 1,
 	SCROLL = 1,
@@ -81,5 +74,12 @@ struct Item
 };
 
 void loadArmour(Item& selectedItemSlot);
-//void loadItem(Item& selectedItemSlot);
+void loadFood(Item& selectedItemSlot);
+void loadIngredient(Item& selectedItemSlot);
+void loadMagicItem(Item& selectedItemSlot);
+void loadPotion(Item& selectedItemSlot);
+void loadScroll(Item& selectedItemSlot);
+void loadShield(Item& selectedItemSlot);
+void loadWeapon(Item& selectedItemSlot);
+void loadItem(Item& selectedItemSlot);
 #endif

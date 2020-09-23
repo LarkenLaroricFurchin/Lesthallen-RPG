@@ -19,6 +19,7 @@ std::string potions{ "/Potions/" };
 std::string scrolls{ "/Scrolls/" };
 std::string shields{ "/Shields/" };
 std::string weapons{ "/Weapons/" };
+std::string empty{"/empty.txt"};
 std::string error{ "/error/" };
 
 std::string checkItemID(int itemID)
@@ -29,20 +30,22 @@ std::string checkItemID(int itemID)
 	switch (itemTypeID)
 	{
 	case '0':
-		return armour;
+		return empty;
 	case '1':
-		return food;
+		return armour;
 	case '2':
-		return ingredients;
+		return food;
 	case '3':
-		return magicItems;
+		return ingredients;
 	case '4':
-		return potions;
+		return magicItems;
 	case '5':
-		return scrolls;
+		return potions;
 	case '6':
-		return shields;
+		return scrolls;
 	case '7':
+		return shields;
+	case '8':
 		return weapons;
 	}
 	return error;
@@ -573,6 +576,49 @@ void loadWeapon(Item& selectedItemSlot)
 }
 //Loads Weapons - Done
 
+void loadEmpty(Item& selectedItemSlot)
+{
+	int emptyID = 0; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(emptyID);
+	std::string directory = currentPath + defaultItemDirectory + empty;
+
+	std::ifstream emptyFile(directory);
+	writeLog("Weapon File [" + directory + "] Opened", TWO);
+
+	std::string unconvertedEmptyMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(emptyFile, unconvertedEmptyMaterial);
+	std::stringstream convertedEmptyMaterial(unconvertedEmptyMaterial);
+	int emptyMaterial;
+	convertedEmptyMaterial >> emptyMaterial;
+
+	selectedItemSlot.itemMaterial = Materials::EMPTY;
+	writeLog("Empty Material Loaded [itemID:" + convertedID + "]", ONE);
+
+
+	std::string unconvertedEmptyType;
+	std::getline(emptyFile, unconvertedEmptyType);
+	int emptyType{ stringToInteger(unconvertedEmptyType) };
+
+	selectedItemSlot.itemType = ItemType::EMPTY;
+
+	writeLog("Empty Type Loaded [itemID:" + convertedID + "]", ONE);
+
+
+	std::string unconvertedEmptyQuality;
+	std::getline(emptyFile, unconvertedEmptyQuality);
+	int emptyQuality{ stringToInteger(unconvertedEmptyQuality) };
+	selectedItemSlot.itemQuality = emptyQuality;
+
+	writeLog("Empty Quality Loaded [itemID:" + convertedID + "]", ONE);
+
+	std::getline(emptyFile, selectedItemSlot.itemName);
+
+	writeLog("Empty Name Loaded [itemID:" + convertedID + "]", ONE);
+
+	emptyFile.close();
+	writeLog("Empty File [" + directory + "] Closed", TWO);
+}
+
 void loadItem(Item& selectedItemSlot)
 {
 	int itemID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
@@ -612,13 +658,8 @@ void loadItem(Item& selectedItemSlot)
 	{
 		loadWeapon(selectedItemSlot);
 	}
-
-	std::ifstream itemFile(directory);
-	writeLog("Item File [" + directory + "] Opened", TWO);
-
-	std::string fileInput{};
-	std::getline(itemFile, fileInput);
-	int materialType{ stringToInteger(fileInput) };
-
-	
+	else if (itemType == empty)
+	{
+		loadEmpty(selectedItemSlot);
+	}
 }
