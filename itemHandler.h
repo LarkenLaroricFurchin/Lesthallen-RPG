@@ -15,6 +15,7 @@ enum class Materials //the values of these materials will be used to calculate t
 	PAPER = 1,
 	GLASS = 1,
 	FOOD = 1,
+	INGREDIENT = 1,
 	LEATHER = 5,
 	WOOD = 10,
 	SOFTMETAL = 25,
@@ -37,19 +38,19 @@ enum class ItemType
 	FOOD = 1,
 	SCROLL = 1,
 	PLAIN = 1,//plain armour
-	LOWINGREDIENT = 1,
+	LOWINGREDIENT = 1,//low level ingredient
 	INGREDIENT = 3,
 	CLUB = 3,//smack your enemies!!
 	MAGICITEM = 5,//wands, staffs etc...
 	SHIELD = 5,
 	DAGGER = 5,
-	MEDIUMINGREDIENT = 5,
+	MEDIUMINGREDIENT = 5,//medium level ingredient
 	SHORTSWORD = 10,
 	LONGSWORD = 20,
 	GREATSWORD = 30,
 	PADDED = 5, //padded armour
 	STUDDED = 10, //studded armour
-	HIGHINGREDIENT = 10,
+	HIGHINGREDIENT = 10,//high level ingredient
 	CHAINMAIL = 25,
 	PLATEMAIL = 40,
 };

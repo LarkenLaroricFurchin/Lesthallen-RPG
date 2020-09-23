@@ -9,7 +9,7 @@
 
 
 
-std::string defaultItemDirectory{ currentPath + "/Lesthallen RPG/Items" };
+std::string defaultItemDirectory{ "/Lesthallen RPG/Items" };
 std::string consumable{"/Consumables/"};
 std::string armour{ "/Armour/" };
 std::string food{ "/Food/" };
@@ -52,7 +52,7 @@ void loadArmour(Item& selectedItemSlot)
 {
 	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
 	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	std::string directory = currentPath + defaultItemDirectory + armour + convertedID + ".txt";
 	
 	std::ifstream armourFile(directory);
 	writeLog("Armour File [" + directory + "] Opened", TWO);
@@ -84,7 +84,7 @@ void loadArmour(Item& selectedItemSlot)
 		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded", ONE);
+	writeLog("Armour Material Loaded [itemID:" + convertedID + "]", ONE);
 
 
 	std::string unconvertedArmourType;
@@ -112,7 +112,7 @@ void loadArmour(Item& selectedItemSlot)
 		break;
 	}
 
-	writeLog("Armour Type Loaded", ONE);
+	writeLog("Armour Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
 	std::string unconvertedArmourQuality;
@@ -122,22 +122,22 @@ void loadArmour(Item& selectedItemSlot)
 	convertedArmourQuality >> armourQuality;
 	selectedItemSlot.itemQuality = armourQuality;
 
-	writeLog("Armour Quality Loaded", ONE);
+	writeLog("Armour Quality Loaded [itemID:" + convertedID + "]", ONE);
 
 	std::getline(armourFile, selectedItemSlot.itemName);
 
-	writeLog("Armour Name Loaded", ONE);
+	writeLog("Armour Name Loaded [itemID:" + convertedID + "]", ONE);
 
 	armourFile.close();
 	writeLog("Armour File [" + directory + "] Closed", TWO);
 }
-
+//Loads Armour - Done
 
 void loadFood(Item& selectedItemSlot)
 {
 	int foodID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
 	std::string convertedID = std::to_string(foodID);
-	std::string directory = defaultItemDirectory + food + convertedID + ".txt";
+	std::string directory = currentPath + defaultItemDirectory + food + convertedID + ".txt";
 
 	std::ifstream foodFile(directory);
 	writeLog("Armour File [" + directory + "] Opened", TWO);
@@ -183,112 +183,87 @@ void loadFood(Item& selectedItemSlot)
 	foodFile.close();
 	writeLog("Food File [" + directory + "] Closed", TWO);
 }
-
+//Loads Food - Done
 
 void loadIngredient(Item& selectedItemSlot)
 {
-	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	int ingredientID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(ingredientID);
+	std::string directory = currentPath + defaultItemDirectory + ingredients + convertedID + ".txt";
 
-	std::ifstream armourFile(directory);
-	writeLog("Armour File [" + directory + "] Opened", TWO);
+	std::ifstream ingredientFile(directory);
+	writeLog("Ingredient File [" + directory + "] Opened", TWO);
+	/*
+	std::string unconvertedIngredientMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(ingredientFile, unconvertedIngredientMaterial);
+	std::stringstream convertedMaterial(unconvertedIngredientMaterial);
+	int ingredientMaterial;
+	convertedMaterial >> ingredientMaterial;
+	*/
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
+	selectedItemSlot.itemMaterial = Materials::INGREDIENT;
+	writeLog("Ingredient Material Loaded [itemID:" + convertedID + "]", ONE);
 
-	switch (armourMaterial)
+
+	std::string unconvertedIngredientType;
+	std::getline(ingredientFile, unconvertedIngredientType);
+	std::stringstream convertedIngredientType(unconvertedIngredientType);
+	int ingredientType;
+	convertedIngredientType >> ingredientType;
+
+	switch (ingredientType)
 	{
 	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
+		selectedItemSlot.itemType = ItemType::LOWINGREDIENT;
 		break;
 	case 5:
-		selectedItemSlot.itemMaterial = Materials::LEATHER;
+		selectedItemSlot.itemType = ItemType::MEDIUMINGREDIENT;
 		break;
 	case 10:
-		selectedItemSlot.itemMaterial = Materials::WOOD;
-		break;
-	case 25:
-		selectedItemSlot.itemMaterial = Materials::SOFTMETAL;
-		break;
-	case 40:
-		selectedItemSlot.itemMaterial = Materials::HARDMETAL;
-		break;
-	case 50:
-		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
-		break;
-	}
-	writeLog("Armour Material Loaded", ONE);
-
-
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
-
-	switch (armourType)
-	{
-	case 1:
-		selectedItemSlot.itemType = ItemType::PLAIN;
-		break;
-	case 5:
-		selectedItemSlot.itemType = ItemType::PADDED;
-		break;
-	case 10:
-		selectedItemSlot.itemType = ItemType::STUDDED;
-		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
-		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
+		selectedItemSlot.itemType = ItemType::HIGHINGREDIENT;
 		break;
 	}
 
-	writeLog("Armour Type Loaded", ONE);
+	writeLog("Ingredient Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourQuality;
-	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
-	selectedItemSlot.itemQuality = armourQuality;
+	std::string unconvertedIngredientQuality;
+	std::getline(ingredientFile, unconvertedIngredientQuality);
+	std::stringstream convertedIngredientQuality(unconvertedIngredientQuality);
+	int ingredientQuality;
+	convertedIngredientQuality >> ingredientQuality;
+	selectedItemSlot.itemQuality = ingredientQuality;
 
-	writeLog("Armour Quality Loaded", ONE);
+	writeLog("Ingredient Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::getline(armourFile, selectedItemSlot.itemName);
+	std::getline(ingredientFile, selectedItemSlot.itemName);
 
-	writeLog("Armour Name Loaded", ONE);
+	writeLog("Ingredient Name Loaded [itemID:" + convertedID + "]", ONE);
 
-	armourFile.close();
-	writeLog("Armour File [" + directory + "] Closed", TWO);
+	ingredientFile.close();
+	writeLog("Ingredient File [" + directory + "] Closed", TWO);
 }
-
+//Loads Ingredients - Done
 
 void loadMagicItem(Item& selectedItemSlot)
 {
-	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	int magicItemID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(magicItemID);
+	std::string directory = currentPath + defaultItemDirectory + magicItems + convertedID + ".txt";
 
-	std::ifstream armourFile(directory);
+	std::ifstream magicItemFile(directory);
 	writeLog("Armour File [" + directory + "] Opened", TWO);
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
+	std::string unconvertedMagicItemMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(magicItemFile, unconvertedMagicItemMaterial);
+	std::stringstream convertedMaterial(unconvertedMagicItemMaterial);
+	int magicItemMaterial;
+	convertedMaterial >> magicItemMaterial;
 
-	switch (armourMaterial)
+	switch (magicItemMaterial)
 	{
 	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
+		selectedItemSlot.itemMaterial = Materials::PAPER;
 		break;
 	case 5:
 		selectedItemSlot.itemMaterial = Materials::LEATHER;
@@ -306,245 +281,164 @@ void loadMagicItem(Item& selectedItemSlot)
 		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded", ONE);
+	writeLog("Magic Item Material Loaded [itemID:" + convertedID + "]", ONE);
+
+	/*
+	std::string unconvertedMagicItemType;
+	std::getline(magicItemFile, unconvertedMagicItemType);
+	std::stringstream convertedMagicItemType(unconvertedMagicItemType);
+	int magicItemType;
+	convertedMagicItemType >> magicItemType;
+	*/
+	selectedItemSlot.itemType = ItemType::MAGICITEM;
+
+	writeLog("Magic Item Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
+	std::string unconvertedMagicItemQuality;
+	std::getline(magicItemFile, unconvertedMagicItemQuality);
+	std::stringstream convertedMagicItemQuality(unconvertedMagicItemQuality);
+	int magicItemQuality;
+	convertedMagicItemQuality >> magicItemQuality;
+	selectedItemSlot.itemQuality = magicItemQuality;
 
-	switch (armourType)
-	{
-	case 1:
-		selectedItemSlot.itemType = ItemType::PLAIN;
-		break;
-	case 5:
-		selectedItemSlot.itemType = ItemType::PADDED;
-		break;
-	case 10:
-		selectedItemSlot.itemType = ItemType::STUDDED;
-		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
-		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
-		break;
-	}
+	writeLog("Magic Item Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	writeLog("Armour Type Loaded", ONE);
-
-
-	std::string unconvertedArmourQuality;
-	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
-	selectedItemSlot.itemQuality = armourQuality;
-
-	writeLog("Armour Quality Loaded", ONE);
-
-	std::getline(armourFile, selectedItemSlot.itemName);
+	std::getline(magicItemFile, selectedItemSlot.itemName);
 
 	writeLog("Armour Name Loaded", ONE);
 
-	armourFile.close();
-	writeLog("Armour File [" + directory + "] Closed", TWO);
+	magicItemFile.close();
+	writeLog("Magic Item File [" + directory + "] Closed", TWO);
 }
-
+//Loads Magic Items - Done
 
 void loadPotion(Item& selectedItemSlot)
 {
-	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	int potionID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(potionID);
+	std::string directory = currentPath + defaultItemDirectory + potions + convertedID + ".txt";
 
-	std::ifstream armourFile(directory);
-	writeLog("Armour File [" + directory + "] Opened", TWO);
+	std::ifstream potionFile(directory);
+	writeLog("Potion File [" + directory + "] Opened", TWO);
+	/*
+	std::string unconvertedPotionMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(potionFile, unconvertedPotionMaterial);
+	std::stringstream convertedPotionMaterial(unconvertedPotionMaterial);
+	int potionMaterial;
+	convertedPotionMaterial >> potionMaterial;
+	*/
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
+	selectedItemSlot.itemMaterial = Materials::GLASS;
 
-	switch (armourMaterial)
-	{
-	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
-		break;
-	case 5:
-		selectedItemSlot.itemMaterial = Materials::LEATHER;
-		break;
-	case 10:
-		selectedItemSlot.itemMaterial = Materials::WOOD;
-		break;
-	case 25:
-		selectedItemSlot.itemMaterial = Materials::SOFTMETAL;
-		break;
-	case 40:
-		selectedItemSlot.itemMaterial = Materials::HARDMETAL;
-		break;
-	case 50:
-		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
-		break;
-	}
-	writeLog("Armour Material Loaded", ONE);
+	writeLog("Potion Material Loaded [itemID:" + convertedID + "]", ONE);
+
+	/*
+	std::string unconvertedPotionType;
+	std::getline(potionFile, unconvertedPotionType);
+	std::stringstream convertedPotionType(unconvertedPotionType);
+	int potionType;
+	convertedPotionType >> potionType;
+	*/
+	selectedItemSlot.itemType = ItemType::POTION;
+
+	writeLog("Potion Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
+	std::string unconvertedPotionQuality;
+	std::getline(potionFile, unconvertedPotionQuality);
+	std::stringstream convertedPotionQuality(unconvertedPotionQuality);
+	int potionQuality;
+	convertedPotionQuality >> potionQuality;
+	selectedItemSlot.itemQuality = potionQuality;
 
-	switch (armourType)
-	{
-	case 1:
-		selectedItemSlot.itemType = ItemType::PLAIN;
-		break;
-	case 5:
-		selectedItemSlot.itemType = ItemType::PADDED;
-		break;
-	case 10:
-		selectedItemSlot.itemType = ItemType::STUDDED;
-		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
-		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
-		break;
-	}
+	writeLog("Potion Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	writeLog("Armour Type Loaded", ONE);
+	std::getline(potionFile, selectedItemSlot.itemName);
 
+	writeLog("Potion Name Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::string unconvertedArmourQuality;
-	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
-	selectedItemSlot.itemQuality = armourQuality;
-
-	writeLog("Armour Quality Loaded", ONE);
-
-	std::getline(armourFile, selectedItemSlot.itemName);
-
-	writeLog("Armour Name Loaded", ONE);
-
-	armourFile.close();
-	writeLog("Armour File [" + directory + "] Closed", TWO);
+	potionFile.close();
+	writeLog("Potion File [" + directory + "] Closed", TWO);
 }
-
+//Loads Potions - Done
 
 void loadScroll(Item& selectedItemSlot)
 {
-	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	int scrollID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(scrollID);
+	std::string directory = currentPath + defaultItemDirectory + scrolls + convertedID + ".txt";
 
-	std::ifstream armourFile(directory);
-	writeLog("Armour File [" + directory + "] Opened", TWO);
+	std::ifstream scrollFile(directory);
+	writeLog("Scroll File [" + directory + "] Opened", TWO);
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
+	std::string unconvertedScrollMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(scrollFile, unconvertedScrollMaterial);
+	std::stringstream convertedScrollMaterial(unconvertedScrollMaterial);
+	int scrollMaterial;
+	convertedScrollMaterial >> scrollMaterial;
 
-	switch (armourMaterial)
+	switch (scrollMaterial)
 	{
 	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
+		selectedItemSlot.itemMaterial = Materials::PAPER;
 		break;
 	case 5:
 		selectedItemSlot.itemMaterial = Materials::LEATHER;
-		break;
-	case 10:
-		selectedItemSlot.itemMaterial = Materials::WOOD;
-		break;
-	case 25:
-		selectedItemSlot.itemMaterial = Materials::SOFTMETAL;
-		break;
-	case 40:
-		selectedItemSlot.itemMaterial = Materials::HARDMETAL;
 		break;
 	case 50:
 		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded", ONE);
+	writeLog("Scroll Material Loaded [itemID:" + convertedID + "]", ONE);
+
+	/*
+	std::string unconvertedScrollType;
+	std::getline(scrollFile, unconvertedScrollType);
+	std::stringstream convertedScrollType(unconvertedScrollType);
+	int scrollType;
+	convertedScrollType >> scrollType;
+	*/
+	selectedItemSlot.itemType = ItemType::SCROLL;
+
+	writeLog("Scroll Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
+	std::string unconvertedScrollQuality;
+	std::getline(scrollFile, unconvertedScrollQuality);
+	std::stringstream convertedScrollQuality(unconvertedScrollQuality);
+	int scrollQuality;
+	convertedScrollQuality >> scrollQuality;
+	selectedItemSlot.itemQuality = scrollQuality;
 
-	switch (armourType)
-	{
-	case 1:
-		selectedItemSlot.itemType = ItemType::PLAIN;
-		break;
-	case 5:
-		selectedItemSlot.itemType = ItemType::PADDED;
-		break;
-	case 10:
-		selectedItemSlot.itemType = ItemType::STUDDED;
-		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
-		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
-		break;
-	}
+	writeLog("Scroll Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	writeLog("Armour Type Loaded", ONE);
+	std::getline(scrollFile, selectedItemSlot.itemName);
 
+	writeLog("Scroll Name Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::string unconvertedArmourQuality;
-	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
-	selectedItemSlot.itemQuality = armourQuality;
-
-	writeLog("Armour Quality Loaded", ONE);
-
-	std::getline(armourFile, selectedItemSlot.itemName);
-
-	writeLog("Armour Name Loaded", ONE);
-
-	armourFile.close();
-	writeLog("Armour File [" + directory + "] Closed", TWO);
+	scrollFile.close();
+	writeLog("Scroll File [" + directory + "] Closed", TWO);
 }
-
+//Loads Scrolls - Done
 
 void loadShield(Item& selectedItemSlot)
 {
-	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	int shieldID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(shieldID);
+	std::string directory = currentPath + defaultItemDirectory + shields + convertedID + ".txt";
 
-	std::ifstream armourFile(directory);
-	writeLog("Armour File [" + directory + "] Opened", TWO);
+	std::ifstream shieldFile(directory);
+	writeLog("Shield File [" + directory + "] Opened", TWO);
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
+	std::string unconvertedShieldMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(shieldFile, unconvertedShieldMaterial);
+	std::stringstream convertedShieldMaterial(unconvertedShieldMaterial);
+	int shieldMaterial;
+	convertedShieldMaterial >> shieldMaterial;
 
-	switch (armourMaterial)
+	switch (shieldMaterial)
 	{
-	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
-		break;
 	case 5:
 		selectedItemSlot.itemMaterial = Materials::LEATHER;
 		break;
@@ -561,16 +455,16 @@ void loadShield(Item& selectedItemSlot)
 		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded", ONE);
+	writeLog("Shield Material Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
+	std::string unconvertedShieldType;
+	std::getline(shieldFile, unconvertedShieldType);
+	std::stringstream convertedShieldType(unconvertedShieldType);
+	int shieldType;
+	convertedShieldType >> shieldType;
 
-	switch (armourType)
+	switch (shieldType)
 	{
 	case 1:
 		selectedItemSlot.itemType = ItemType::PLAIN;
@@ -581,58 +475,46 @@ void loadShield(Item& selectedItemSlot)
 	case 10:
 		selectedItemSlot.itemType = ItemType::STUDDED;
 		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
-		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
-		break;
 	}
 
-	writeLog("Armour Type Loaded", ONE);
+	writeLog("Shield Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourQuality;
-	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
-	selectedItemSlot.itemQuality = armourQuality;
+	std::string unconvertedShieldQuality;
+	std::getline(shieldFile, unconvertedShieldQuality);
+	std::stringstream convertedShieldQuality(unconvertedShieldQuality);
+	int shieldQuality;
+	convertedShieldQuality >> shieldQuality;
+	selectedItemSlot.itemQuality = shieldQuality;
 
-	writeLog("Armour Quality Loaded", ONE);
+	writeLog("Shield Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::getline(armourFile, selectedItemSlot.itemName);
+	std::getline(shieldFile, selectedItemSlot.itemName);
 
-	writeLog("Armour Name Loaded", ONE);
+	writeLog("Shield Name Loaded [itemID:" + convertedID + "]", ONE);
 
-	armourFile.close();
-	writeLog("Armour File [" + directory + "] Closed", TWO);
+	shieldFile.close();
+	writeLog("Shield File [" + directory + "] Closed", TWO);
 }
-
+//Loads Shields - Done
 
 void loadWeapon(Item& selectedItemSlot)
 {
-	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(armourID);
-	std::string directory = defaultItemDirectory + armour + convertedID + ".txt";
+	int weaponID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string convertedID = std::to_string(weaponID);
+	std::string directory = currentPath + defaultItemDirectory + weapons + convertedID + ".txt";
 
-	std::ifstream armourFile(directory);
-	writeLog("Armour File [" + directory + "] Opened", TWO);
+	std::ifstream weaponFile(directory);
+	writeLog("Weapon File [" + directory + "] Opened", TWO);
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
+	std::string unconvertedWeaponMaterial; //converts the number that's read from the file into an actual integer
+	std::getline(weaponFile, unconvertedWeaponMaterial);
+	std::stringstream convertedWeaponMaterial(unconvertedWeaponMaterial);
+	int weaponMaterial;
+	convertedWeaponMaterial >> weaponMaterial;
 
-	switch (armourMaterial)
+	switch (weaponMaterial)
 	{
-	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
-		break;
-	case 5:
-		selectedItemSlot.itemMaterial = Materials::LEATHER;
-		break;
 	case 10:
 		selectedItemSlot.itemMaterial = Materials::WOOD;
 		break;
@@ -646,54 +528,50 @@ void loadWeapon(Item& selectedItemSlot)
 		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
 		break;
 	}
-	writeLog("Armour Material Loaded", ONE);
+	writeLog("Weapon Material Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
+	std::string unconvertedWeaponType;
+	std::getline(weaponFile, unconvertedWeaponType);
+	int weaponType{ stringToInteger(unconvertedWeaponType) };
 
-	switch (armourType)
+	switch (weaponType)
 	{
-	case 1:
-		selectedItemSlot.itemType = ItemType::PLAIN;
+	case 3:
+		selectedItemSlot.itemType = ItemType::CLUB;
 		break;
 	case 5:
-		selectedItemSlot.itemType = ItemType::PADDED;
+		selectedItemSlot.itemType = ItemType::DAGGER;
 		break;
 	case 10:
-		selectedItemSlot.itemType = ItemType::STUDDED;
+		selectedItemSlot.itemType = ItemType::SHORTSWORD;
 		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
+	case 20:
+		selectedItemSlot.itemType = ItemType::LONGSWORD;
 		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
+	case 30:
+		selectedItemSlot.itemType = ItemType::GREATSWORD;
 		break;
 	}
 
-	writeLog("Armour Type Loaded", ONE);
+	writeLog("Weapon Type Loaded [itemID:" + convertedID + "]", ONE);
 
 
-	std::string unconvertedArmourQuality;
-	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
-	selectedItemSlot.itemQuality = armourQuality;
+	std::string unconvertedWeaponQuality;
+	std::getline(weaponFile, unconvertedWeaponQuality);
+	int weaponQuality{ stringToInteger(unconvertedWeaponQuality) };
+	selectedItemSlot.itemQuality = weaponQuality;
 
-	writeLog("Armour Quality Loaded", ONE);
+	writeLog("Weapon Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::getline(armourFile, selectedItemSlot.itemName);
+	std::getline(weaponFile, selectedItemSlot.itemName);
 
-	writeLog("Armour Name Loaded", ONE);
+	writeLog("Weapon Name Loaded [itemID:" + convertedID + "]", ONE);
 
-	armourFile.close();
-	writeLog("Armour File [" + directory + "] Closed", TWO);
+	weaponFile.close();
+	writeLog("Weapon File [" + directory + "] Closed", TWO);
 }
-
+//Loads Weapons - Done
 
 void loadItem(Item& selectedItemSlot)
 {
