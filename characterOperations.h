@@ -29,17 +29,23 @@ public:
 	short characterLevel{ 0 };
 	int characterExperience{ 0 };
 
-	short maxInventorySize{10};//max 40
+	int characterGold{ 0 };
+	int characterSilver{ 0 };
+	int characterCopper{ 10 };
 
-	Item characterArmourHead{};
-	Item characterArmourTorso{};
-	Item characterArmourLegs{};
-	Item characterArmourFeet{};
+	int characterHealth{ 10 };
+	int characterMaxHealth{ 10 };
 
-	Item primarySlot{};
-	Item secondarySlot{};
+	int characterStamina{ 10 };
+	int characterMaxStamina{ 10 };
 
-	Item inventory[40]{ primarySlot, secondarySlot, characterArmourHead, characterArmourTorso, characterArmourLegs, characterArmourFeet };
+	int characterMagic{ 10 };
+	int characterMaxMagic{ 10 };
+
+	short maxInventorySize{10};//max 40 for now
+
+
+	Item inventory[40]{ };//slot 0 = Primary slot. Slot 1 = Secondary slot. Slots 2-5 = Armour Slots. Slots 6-39 = inventory slots.
 
 	void characterCreation() //gets user input to create a new character
 	{
@@ -64,7 +70,29 @@ public:
 		system("CLS");
 
 
-		std::cout << "Choose your class:\n" << "[1][Sorcerer]\n" << "[2][Wizard]\n" << "[3][Druid]\n" << "[4][Bounty Hunter]\n" << "[5][Hunter]\n" << "[6][Cleric]\n" << "[7][Rogue]\n" << "[MM]:";
+		inventory[0].itemID = 8000;//Primary Slot
+
+		inventory[1].itemID = 7000;//Secondary Slot
+
+		inventory[2].itemID = 1000;//Armour Head Slot
+
+		inventory[3].itemID = 1001;//Armour Torso Slot
+
+		inventory[4].itemID = 1002;//Armour Legs Slot
+
+		inventory[5].itemID = 1003;//Armour Feet Slot
+
+		inventory[6].itemID = 2000;//Inventory Slot 1 (inventory slot 6 to the system, inventory slot 1 to the player) Stale Bread is being placed here
+
+		inventory[7].itemID = 0;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 0;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+
+		inventory[9].itemID = 0;//Inventory Slot 4 (inventory slot 9 to the system, inventory slot 4 to the player)
+		//for now the remaining slots just have food in them, once the starting inventories for specific classes have been sorted only one slot shall be taken.
+
+
+		std::cout << "Choose your class:\n" << "[1][Sorcerer]\n" << "[2][Wizard]\n" << "[3][Druid]\n" << "[4][Cleric]\n" << "[5][Paladin]\n" << "[6][Bounty Hunter]\n" << "[7][Rogue]\n" << "[8][Barbarian]\n" << "[9][Hunter]\n" << "[MM]:";
 
 		UserInput = stringToIntegerGL();
 
@@ -72,24 +100,39 @@ public:
 		{
 		case 1:
 			characterClass = "Sorcerer";
+			sorcererCreation();
 			break;
 		case 2:
 			characterClass = "Wizard";
+			wizardCreation();
 			break;
 		case 3:
 			characterClass = "Druid";
+			druidCreation();
 			break;
 		case 4:
-			characterClass = "Bounty Hunter";
+			characterClass = "Cleric";
+			clericCreation();
 			break;
 		case 5:
-			characterClass = "Hunter";
+			characterClass = "Paladin";
+			paladinCreation();
 			break;
 		case 6:
-			characterClass = "Cleric";
+			characterClass = "Bounty Hunter";
+			bountyHunterCreation();
 			break;
 		case 7:
 			characterClass = "Rogue";
+			rogueCreation();
+			break;
+		case 8:
+			characterClass = "Barbarian";
+			barbarianCreation();
+			break;
+		case 9:
+			characterClass = "Hunter";
+			hunterCreation();
 			break;
 		}
 
@@ -104,17 +147,9 @@ public:
 
 		characterLevel = 0;
 
-		characterArmourHead.itemID = 1000;
+		
 
-		characterArmourTorso.itemID = 1001;
-
-		characterArmourLegs.itemID = 1002;
-
-		characterArmourFeet.itemID = 1003;
-
-		primarySlot.itemID = 8000;
-
-		secondarySlot.itemID = 7000;
+		
 		
 		int i{};
 
@@ -136,9 +171,76 @@ public:
 		saveCharacterDetails();
 	}
 
+	void sorcererCreation()
+	{
+		inventory[7].itemID = 4000;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player) enchanted paper
+
+		inventory[8].itemID = 4001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player) paper magic focus
+	}
+
+	void wizardCreation()
+	{
+		inventory[7].itemID = 6000;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player) Magic Punch
+
+		inventory[8].itemID = 5000;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player) Crappy Health Potion
+	}
+
+	void druidCreation()
+	{
+		inventory[7].itemID = 4002;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 6001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+	}
+
+	void clericCreation()
+	{
+		inventory[7].itemID = 4002;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 5000;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+	}
+
+	void paladinCreation()
+	{
+		inventory[3].itemID = 1009;//Armour Torso Slot. Leather Padded Jacket
+
+		inventory[7].itemID = 8001;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player) copper dagger
+
+		inventory[8].itemID = 7001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+	}
+
+	void bountyHunterCreation()
+	{
+		inventory[7].itemID = 8001;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 5001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player) crappy poison potion
+	}
+
+	void rogueCreation()
+	{
+		inventory[7].itemID = 8001;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 3000;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+	}
+
+	void barbarianCreation()
+	{
+		inventory[3].itemID = 1005;//Armour Torso Slot. Leather Jacket
+
+		inventory[7].itemID = 8000;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 2001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+	}
+
+	void hunterCreation()
+	{
+		inventory[7].itemID = 8002;//Inventory Slot 2 (inventory slot 7 to the system, inventory slot 2 to the player)
+
+		inventory[8].itemID = 2001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
+	}
+
 	void saveCharacterDetails()
 	{
-		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt"; //using .append() because just doing "string + string" is a big no no in classes.
+		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt"; 
 
 
 		std::ofstream characterFile(characterDirectory);
@@ -152,8 +254,9 @@ public:
 		}
 		
 		//if you add more lines to the write to file, make sure to end each line with a newline
-		characterFile << characterName << "\n" << characterRace << "\n" << characterClass << "\n" << characterAge << "\n" << characterLevel << "\n" << characterExperience << "\n" << primarySlot.itemID << "\n" << secondarySlot.itemID << "\n";
-		characterFile << characterArmourHead.itemID << "\n" << characterArmourTorso.itemID << "\n" << characterArmourLegs.itemID << "\n" << characterArmourFeet.itemID << "\n";
+		characterFile << characterName << "\n" << characterRace << "\n" << characterClass << "\n" << characterAge << "\n" << characterLevel << "\n" << characterExperience << "\n" << characterGold << "\n" << characterSilver << "\n" << characterCopper << "\n";
+		characterFile << characterHealth << "\n" << characterStamina << "\n" << characterMagic << "\n" << inventory[0].itemID << "\n" << inventory[1].itemID << "\n";
+		characterFile << inventory[2].itemID << "\n" << inventory[3].itemID << "\n" << inventory[4].itemID << "\n" << inventory[5].itemID << "\n";
 
 		int i{};//saves the inventory to the character file
 		for (i = 6; i <= maxInventorySize - 1; i++)
@@ -174,11 +277,11 @@ public:
 		//printLogo(8, currentPath + ("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
 		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt";
 
+		
 
 		std::ifstream characterFile(characterDirectory);
 
-		characterLoaded = true;
-
+		
 		if (characterFile.is_open() == false)
 		{
 			std::cout << "File not found. Do you wish to create it?(Y/N): ";
@@ -197,7 +300,7 @@ public:
 			}
 		}
 		
-
+		characterLoaded = true;
 		
 
 		std::getline(characterFile, characterName);
@@ -221,37 +324,37 @@ public:
 		std::getline(characterFile, xp);
 		std::stringstream convertedXp(xp);
 		convertedXp >> characterExperience;
-		/*
-		std::string primaryWeaponID;
-		std::getline(characterFile, primaryWeaponID);
-		std::stringstream convertedPrimaryWeaponID(primaryWeaponID);
-		convertedPrimaryWeaponID >> primarySlot.itemID;
 
-		std::string secondaryWeaponID;
-		std::getline(characterFile, secondaryWeaponID);
-		std::stringstream convertedSecondaryWeaponID(secondaryWeaponID);
-		convertedSecondaryWeaponID >> secondarySlot.itemID;
+		std::string gold;
+		std::getline(characterFile, gold);
+		std::stringstream convertedGold(gold);
+		convertedGold >> characterGold;
 
-		std::string headArmourID;
-		std::getline(characterFile, headArmourID);
-		std::stringstream convertedHeadID(headArmourID);
-		convertedHeadID >> characterArmourHead.itemID;
+		std::string silver;
+		std::getline(characterFile, silver);
+		std::stringstream convertedSilver(silver);
+		convertedSilver >> characterSilver;
 
-		std::string torsoArmourID;
-		std::getline(characterFile, torsoArmourID);
-		std::stringstream convertedTorsoID(torsoArmourID);
-		convertedTorsoID >> characterArmourTorso.itemID;
+		std::string copper;
+		std::getline(characterFile, copper);
+		std::stringstream convertedCopper(copper);
+		convertedCopper >> characterCopper;
 
-		std::string legArmourID;
-		std::getline(characterFile, legArmourID);
-		std::stringstream convertedLegID(legArmourID);
-		convertedLegID >> characterArmourLegs.itemID;
+		std::string health;
+		std::getline(characterFile, health);
+		std::stringstream convertedHealth(health);
+		convertedHealth >> characterHealth;
 
-		std::string feetArmourID;
-		std::getline(characterFile, feetArmourID);
-		std::stringstream convertedFeetID(feetArmourID);
-		convertedFeetID >> characterArmourFeet.itemID;
-		*/
+		std::string stamina;
+		std::getline(characterFile, stamina);
+		std::stringstream convertedStamina(stamina);
+		convertedStamina >> characterStamina;
+
+		std::string magic;
+		std::getline(characterFile, magic);
+		std::stringstream convertedMagic(magic);
+		convertedMagic >> characterMagic;
+
 
 		int i{};
 		for (i = 0; i <= maxInventorySize - 1; i++)
@@ -273,8 +376,9 @@ public:
 	void printCharacterDetails()
 	{
 		std::cout << "[Name] "<<characterName << "\n" << "[Race] " << characterRace << "\n" << "[Class] " << characterClass << "\n" << "[Age] " << characterAge << "\n" << "[Level] " << characterLevel << "\n" << "[XP] " << characterExperience << std::endl;;
-		std::cout << "[Head] " << characterArmourHead.itemName << "\n" << "[Torso] " << characterArmourTorso.itemName << "\n" << "[Legs] " << characterArmourLegs.itemName << "\n" << "[Feet] " << characterArmourFeet.itemName << "\n";
-		std::cout << "[Primary Slot] " << primarySlot.itemName << "\n" << "[Secondary Slot] " << secondarySlot.itemName << std::endl;
+		std::cout << "[Head] " << inventory[2].itemName << "\n" << "[Torso] " << inventory[3].itemName << "\n" << "[Legs] " << inventory[4].itemName << "\n" << "[Feet] " << inventory[5].itemName << "\n";
+		std::cout << "[Primary Slot] " << inventory[0].itemName << "\n" << "[Secondary Slot] " << inventory[1].itemName << std::endl;
+		
 		int i{};
 		for (i = 6; i <= maxInventorySize - 1; i++)
 		{
@@ -300,6 +404,7 @@ public:
 	void incrementCharacterLevel()
 	{
 		characterLevel++;
+		nextLevel = nextLevel * 2;
 		writeLog("Character Level Incremented", TWO);
 	}
 

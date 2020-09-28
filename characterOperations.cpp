@@ -131,3 +131,18 @@ std::string getItemClass(int itemScore)
 	}
 	return "Z";
 }
+
+int getMaxHealth()
+{
+
+}
+
+int getMaxStamina()
+{
+
+}
+
+int getMaxMagic()
+{
+
+}

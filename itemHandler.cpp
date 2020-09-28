@@ -129,7 +129,7 @@ void loadArmour(Item& selectedItemSlot)
 
 	std::getline(armourFile, selectedItemSlot.itemName);
 
-	writeLog("Armour Name Loaded [itemID:" + convertedID + "]", ONE);
+	writeLog("Armour Name [" + selectedItemSlot.itemName + "] Loaded [itemID:" + convertedID + "]", ONE);
 
 	armourFile.close();
 	writeLog("Armour File [" + directory + "] Closed", TWO);
@@ -157,13 +157,13 @@ void loadFood(Item& selectedItemSlot)
 
 	writeLog("Food Material Loaded [itemID:" + convertedID + "]", ONE);
 
-	/*
+	
 	std::string unconvertedFoodType;
 	std::getline(foodFile, unconvertedFoodType);
 	std::stringstream convertedFoodType(unconvertedFoodType);
 	int foodType;
 	convertedFoodType >> foodType;
-	*/
+	
 
 	selectedItemSlot.itemType = ItemType::FOOD;
 
@@ -196,13 +196,13 @@ void loadIngredient(Item& selectedItemSlot)
 
 	std::ifstream ingredientFile(directory);
 	writeLog("Ingredient File [" + directory + "] Opened", TWO);
-	/*
+	
 	std::string unconvertedIngredientMaterial; //converts the number that's read from the file into an actual integer
 	std::getline(ingredientFile, unconvertedIngredientMaterial);
 	std::stringstream convertedMaterial(unconvertedIngredientMaterial);
 	int ingredientMaterial;
 	convertedMaterial >> ingredientMaterial;
-	*/
+	
 
 	selectedItemSlot.itemMaterial = Materials::INGREDIENT;
 	writeLog("Ingredient Material Loaded [itemID:" + convertedID + "]", ONE);
@@ -286,13 +286,13 @@ void loadMagicItem(Item& selectedItemSlot)
 	}
 	writeLog("Magic Item Material Loaded [itemID:" + convertedID + "]", ONE);
 
-	/*
+	
 	std::string unconvertedMagicItemType;
 	std::getline(magicItemFile, unconvertedMagicItemType);
 	std::stringstream convertedMagicItemType(unconvertedMagicItemType);
 	int magicItemType;
 	convertedMagicItemType >> magicItemType;
-	*/
+	
 	selectedItemSlot.itemType = ItemType::MAGICITEM;
 
 	writeLog("Magic Item Type Loaded [itemID:" + convertedID + "]", ONE);
@@ -324,25 +324,25 @@ void loadPotion(Item& selectedItemSlot)
 
 	std::ifstream potionFile(directory);
 	writeLog("Potion File [" + directory + "] Opened", TWO);
-	/*
+	
 	std::string unconvertedPotionMaterial; //converts the number that's read from the file into an actual integer
 	std::getline(potionFile, unconvertedPotionMaterial);
 	std::stringstream convertedPotionMaterial(unconvertedPotionMaterial);
 	int potionMaterial;
 	convertedPotionMaterial >> potionMaterial;
-	*/
+	
 
 	selectedItemSlot.itemMaterial = Materials::GLASS;
 
 	writeLog("Potion Material Loaded [itemID:" + convertedID + "]", ONE);
 
-	/*
+	
 	std::string unconvertedPotionType;
 	std::getline(potionFile, unconvertedPotionType);
 	std::stringstream convertedPotionType(unconvertedPotionType);
 	int potionType;
 	convertedPotionType >> potionType;
-	*/
+	
 	selectedItemSlot.itemType = ItemType::POTION;
 
 	writeLog("Potion Type Loaded [itemID:" + convertedID + "]", ONE);
@@ -395,13 +395,13 @@ void loadScroll(Item& selectedItemSlot)
 	}
 	writeLog("Scroll Material Loaded [itemID:" + convertedID + "]", ONE);
 
-	/*
+	
 	std::string unconvertedScrollType;
 	std::getline(scrollFile, unconvertedScrollType);
 	std::stringstream convertedScrollType(unconvertedScrollType);
 	int scrollType;
 	convertedScrollType >> scrollType;
-	*/
+	
 	selectedItemSlot.itemType = ItemType::SCROLL;
 
 	writeLog("Scroll Type Loaded [itemID:" + convertedID + "]", ONE);
@@ -548,6 +548,9 @@ void loadWeapon(Item& selectedItemSlot)
 		break;
 	case 10:
 		selectedItemSlot.itemType = ItemType::SHORTSWORD;
+		break;
+	case 12:
+		selectedItemSlot.itemType = ItemType::SHORTBOW;
 		break;
 	case 20:
 		selectedItemSlot.itemType = ItemType::LONGSWORD;

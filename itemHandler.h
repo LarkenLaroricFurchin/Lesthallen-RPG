@@ -39,6 +39,7 @@ enum class ItemType
 	DAGGER = 5,
 	MEDIUMINGREDIENT = 5,//medium level ingredient
 	SHORTSWORD = 10,
+	SHORTBOW = 12,
 	LONGSWORD = 20,
 	GREATSWORD = 30,
 	PADDED = 5, //padded armour

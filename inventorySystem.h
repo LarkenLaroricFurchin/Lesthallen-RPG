@@ -1,0 +1,4 @@
+#ifndef INVENTORYSYSTEM
+#define INVENTORYSYSTEM
+
+#endif
