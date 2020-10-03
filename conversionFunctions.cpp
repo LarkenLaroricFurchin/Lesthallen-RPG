@@ -23,3 +23,13 @@ int stringToInteger(std::string stringToConvert)
 	convertedString >> intToReturn; //you have to access a stringstream the same way you access std::cin
 	return intToReturn;
 }
+
+int stringToIntegerFF(std::ifstream& file)//convert a string to an integer by reading a line from the supplied file
+{
+	std::string stringToConvert{};
+	std::getline(file, stringToConvert);
+	std::stringstream convertedString(stringToConvert);
+	int convertedStringToReturn{};
+	convertedString >> convertedStringToReturn;
+	return convertedStringToReturn;
+}

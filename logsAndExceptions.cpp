@@ -29,3 +29,21 @@ void writeLog(std::string eventToLog, int logLevel)
 		logFile.close();
 	}
 }
+
+void writeException(std::string eventToLog)
+{
+	if (characterLoaded == false)
+	{
+		LogFile = logAndExceptionDirectory + "Exceptions.txt";
+	}
+	else
+	{
+		LogFile = logAndExceptionDirectory + playerCharacter.characterName + "Exceptions.txt";
+	}
+
+	std::ofstream logFile(LogFile, std::ios::app);
+	std::string curTime = getTime();
+	eventToLog = curTime + "]  " + eventToLog;
+	logFile << "[" << eventToLog << "\n";
+	logFile.close();
+}

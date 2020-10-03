@@ -35,22 +35,11 @@ public:
 		std::string userAnswer{};
 		std::getline(std::cin, userAnswer);
 
-		if (userAnswer == "Y" || userAnswer == "y" || userAnswer == "Yes" || userAnswer == "yes")
-		{
-			std::cout << "Enter the character's name: ";
-			std::getline(std::cin, userAnswer);
-			playerCharacter.characterName = userAnswer;
-			characterUsed = playerCharacter.characterName;
-			writeLog("Previous character saved selected", THREE);
-			playerCharacter.loadCharacterDetails();
-		}
-		else if (userAnswer == "N" || userAnswer == "n" || userAnswer == "No" || userAnswer == "no")
-		{
-			writeLog("New character selected", THREE);
-			system("CLS");
-			playerCharacter.characterCreation();
-			characterUsed = playerCharacter.characterName;
-		}
+
+		writeLog("New character selected", THREE);
+		system("CLS");
+		playerCharacter.characterCreation();
+		characterUsed = playerCharacter.characterName;
 
 		chooseStartLocation();
 		system("CLS");

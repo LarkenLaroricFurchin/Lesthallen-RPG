@@ -6,6 +6,7 @@
 #include <fstream>
 #include <ctime>  //used to make the stuff in "getTime()" work
 #include <chrono> //used to make the stuff in "getTime()" work
+#include <exception>
 
 #include "logsAndExceptions.h"
 #include "itemHandler.h"
@@ -14,12 +15,14 @@
 
 inline std::string defaultCharacterFileDir = currentPath + "/Lesthallen RPG/CharacterFiles/";
 inline bool characterLoaded;
+namespace fs = std::filesystem;
 
 
 
 class CharacterOperations
 {
 private:
+	std::string characterGameSaveDirectory{ currentPath + "/Lesthallen RPG/CharacterFiles/" + characterName };
 	int nextLevel{ 20 };
 public:
 	std::string characterName{ "Name Name" };
@@ -51,7 +54,11 @@ public:
 	{
 		std::cout << "Enter characters name: ";
 		std::getline(std::cin, characterName);
-		system("CLS");
+		std::system("CLS");
+
+		characterGameSaveDirectory = currentPath + "/Lesthallen RPG/CharacterFiles/" + characterName;
+
+		writeLog("Character Save Directory [" + characterGameSaveDirectory + "]", ONE);
 
 		std::cout << "Choose your race:\n" << "[1][Human]\n" << "[2][Lesthallen]\n" << "[MM]:";
 
@@ -67,7 +74,7 @@ public:
 			break;
 		}
 
-		system("CLS");
+		std::system("CLS");
 
 
 		inventory[0].itemID = 8000;//Primary Slot
@@ -136,20 +143,17 @@ public:
 			break;
 		}
 
-		system("CLS");
+		std::system("CLS");
 
 
 		std::cout << "Enter characters age: ";
 		characterAge = stringToIntegerGL();
-		system("CLS");
+		std::system("CLS");
 
 		characterExperience = 0;
 
 		characterLevel = 0;
 
-		
-
-		
 		
 		int i{};
 
@@ -168,6 +172,7 @@ public:
 
 		writeLog("Character Created", THREE);
 
+		characterSaveDirectoryCreation();
 		saveCharacterDetails();
 	}
 
@@ -238,10 +243,36 @@ public:
 		inventory[8].itemID = 2001;//Inventory Slot 3 (inventory slot 8 to the system, inventory slot 3 to the player)
 	}
 
+	void characterSaveDirectoryCreation()
+	{
+		try
+		{
+			writeLog("Character Save Directory creation started", TWO);
+
+			fs::create_directory(characterGameSaveDirectory);
+			if (fs::is_directory(characterGameSaveDirectory))
+			{
+				writeLog("Character Save Directory Created", ONE);
+			}
+			else
+			{
+				writeLog("Character Save Directory Failed To Create!", ONE);
+			}
+		}
+		catch (std::exception& e)
+		{
+			std::string curTime = getTime();
+			std::string caughtException = e.what();
+			writeException("[" + curTime + "] Error! Creating directory failed [" + caughtException);
+		}
+
+	}
+
 	void saveCharacterDetails()
 	{
-		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt"; 
+		std::string characterDirectory = characterGameSaveDirectory + "/" + characterName + ".txt";
 
+		writeLog("Character Save File [" + characterDirectory + "]", ONE);
 
 		std::ofstream characterFile(characterDirectory);
 		if (characterFile.is_open())
@@ -275,12 +306,12 @@ public:
 	void loadCharacterDetails()
 	{
 		//printLogo(8, currentPath + ("/Lesthallen RPG/CharacterFiles/CharacterStats.txt"), false);
-		std::string characterDirectory = defaultCharacterFileDir + characterName + ".txt";
+		characterGameSaveDirectory = "/Lesthallen RPG/CharacterFiles/" + characterName;
+		std::string characterDirectory = currentPath + characterGameSaveDirectory + "/" + characterName + ".txt";
 
-		
+		writeLog("Character File [" + characterDirectory + "]", ONE);
 
 		std::ifstream characterFile(characterDirectory);
-
 		
 		if (characterFile.is_open() == false)
 		{
@@ -376,6 +407,7 @@ public:
 	void printCharacterDetails()
 	{
 		std::cout << "[Name] "<<characterName << "\n" << "[Race] " << characterRace << "\n" << "[Class] " << characterClass << "\n" << "[Age] " << characterAge << "\n" << "[Level] " << characterLevel << "\n" << "[XP] " << characterExperience << std::endl;;
+		std::cout << "[Gold] " << characterGold << "\n" << "[Silver] " << characterSilver << "\n" << "[Copper] " << characterCopper << "\n" << "[Health] " << characterHealth << "\n" << "[Stamina] " << characterStamina << "\n" << "[Magic] " << characterMagic << "\n";
 		std::cout << "[Head] " << inventory[2].itemName << "\n" << "[Torso] " << inventory[3].itemName << "\n" << "[Legs] " << inventory[4].itemName << "\n" << "[Feet] " << inventory[5].itemName << "\n";
 		std::cout << "[Primary Slot] " << inventory[0].itemName << "\n" << "[Secondary Slot] " << inventory[1].itemName << std::endl;
 		

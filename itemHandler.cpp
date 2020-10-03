@@ -21,6 +21,7 @@ std::string shields{ "/Shields/" };
 std::string weapons{ "/Weapons/" };
 std::string empty{"/empty.txt"};
 std::string error{ "/error/" };
+std::string material{"/Lesthallen RPG/System/Materials"};
 
 std::string checkItemID(int itemID)
 {
@@ -51,6 +52,43 @@ std::string checkItemID(int itemID)
 	return error;
 }
 
+void loadMaterial(Item& selectedItemSlot)
+{
+	std::string materialName{ selectedItemSlot.itemMaterial.materialName };
+
+	std::ifstream materialFile(currentPath + "/" + material + "/" + materialName + ".txt");
+	writeLog("Material File [" + currentPath + "/" + material + "/" + materialName + ".txt" + "] Opened", TWO);
+
+
+	std::getline(materialFile, selectedItemSlot.itemMaterial.materialType);
+	writeLog("Material Type ["+ selectedItemSlot.itemMaterial.materialType + "] Loaded", TWO);
+
+
+	std::string unconvertedMaterialQuality{};
+	std::getline(materialFile, unconvertedMaterialQuality);
+	int materialQuality{ stringToInteger(unconvertedMaterialQuality) };
+	selectedItemSlot.itemMaterial.materialQuality = materialQuality;
+	writeLog("Material Quality [" + std::to_string(materialQuality) + "] Loaded", TWO);
+
+
+	std::string unconvertedMaterialStrength{};
+	std::getline(materialFile, unconvertedMaterialStrength);
+	int materialStrength{ stringToInteger(unconvertedMaterialStrength) };
+	selectedItemSlot.itemMaterial.materialStrength = materialStrength;
+	writeLog("Material Strength [" + std::to_string(materialStrength) + "] Loaded", TWO);
+
+
+	std::string unconvertedMaterialWeight{};
+	std::getline(materialFile, unconvertedMaterialWeight);
+	int materialWeight{ stringToInteger(unconvertedMaterialWeight) };
+	selectedItemSlot.itemMaterial.materialWeight = materialWeight;
+	writeLog("Material Weight [" + std::to_string(materialWeight) + "] Loaded", TWO);
+
+
+	materialFile.close();
+	writeLog("Material File [" + currentPath + "/" + material + "/" + materialName + ".txt" + "] Closed", TWO);
+}
+/*
 void loadArmour(Item& selectedItemSlot)
 {
 	int armourID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
@@ -60,74 +98,58 @@ void loadArmour(Item& selectedItemSlot)
 	std::ifstream armourFile(directory);
 	writeLog("Armour File [" + directory + "] Opened", TWO);
 
-	std::string unconvertedArmourMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(armourFile, unconvertedArmourMaterial);
-	std::stringstream convertedMaterial(unconvertedArmourMaterial);
-	int armourMaterial;
-	convertedMaterial >> armourMaterial;
-
-	switch(armourMaterial)
-	{
-	case 1:
-		selectedItemSlot.itemMaterial = Materials::CLOTH;
-		break;
-	case 5:
-		selectedItemSlot.itemMaterial = Materials::LEATHER;
-		break;
-	case 10:
-		selectedItemSlot.itemMaterial = Materials::WOOD;
-		break;
-	case 25:
-		selectedItemSlot.itemMaterial = Materials::SOFTMETAL;
-		break;
-	case 40:
-		selectedItemSlot.itemMaterial = Materials::HARDMETAL;
-		break;
-	case 50:
-		selectedItemSlot.itemMaterial = Materials::COMPOSITE;
-		break;
-	}
+	//Load the armours material
+	std::getline(armourFile, selectedItemSlot.itemMaterial.materialName);
+	loadMaterial(selectedItemSlot);
 	writeLog("Armour Material Loaded [itemID:" + convertedID + "]", ONE);
 
-
-	std::string unconvertedArmourType;
-	std::getline(armourFile, unconvertedArmourType);
-	std::stringstream convertedArmourType(unconvertedArmourType);
-	int armourType;
-	convertedArmourType >> armourType;
-
-	switch (armourType)
-	{
-	case 1:
-		selectedItemSlot.itemType = ItemType::PLAIN;
-		break;
-	case 5:
-		selectedItemSlot.itemType = ItemType::PADDED;
-		break;
-	case 10:
-		selectedItemSlot.itemType = ItemType::STUDDED;
-		break;
-	case 25:
-		selectedItemSlot.itemType = ItemType::CHAINMAIL;
-		break;
-	case 40:
-		selectedItemSlot.itemType = ItemType::PLATEMAIL;
-		break;
-	}
-
+	//Load the armours type
+	std::getline(armourFile, selectedItemSlot.itemType);
 	writeLog("Armour Type Loaded [itemID:" + convertedID + "]", ONE);
 
+	//Load the armours sub type
+	std::getline(armourFile, selectedItemSlot.itemSubType);
+	writeLog("Armour Sub Type Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::string unconvertedArmourQuality;
+	//Load the armours quality
+	std::string unconvertedArmourQuality{};
 	std::getline(armourFile, unconvertedArmourQuality);
-	std::stringstream convertedArmourQuality(unconvertedArmourQuality);
-	int armourQuality;
-	convertedArmourQuality >> armourQuality;
+	int armourQuality{ stringToInteger(unconvertedArmourQuality) };
 	selectedItemSlot.itemQuality = armourQuality;
-
 	writeLog("Armour Quality Loaded [itemID:" + convertedID + "]", ONE);
 
-	std::getline(armourFile, selectedItemSlot.itemName);
+	//Load the armours damage - This should always be 0 for armour, but it's loaded anyways as part of the item struct
+	std::string unconvertedArmourDamage{};
+	std::getline(armourFile, unconvertedArmourDamage);
+	int armourDamage{ stringToInteger(unconvertedArmourDamage) };
+	selectedItemSlot.itemDamage = armourDamage;
+	writeLog("Armour Damage Loaded [itemID:" + convertedID + "]", ONE);
+
+	//Load the armours durability
+	std::string unconvertedArmourDurability{};
+	std::getline(armourFile, unconvertedArmourDurability);
+	int armourDurability{ stringToInteger(unconvertedArmourDurability) };
+	selectedItemSlot.itemDurability = armourDurability;
+	writeLog("Armour Durability Loaded [itemID:" + convertedID + "]", ONE);
+
+	//Load the armours Stackable state
+	std::string unconvertedArmourStackability{};
+	std::getline(armourFile, unconvertedArmourStackability);
+	bool armourStackability{ stringToInteger(unconvertedArmourStackability) };
+	selectedItemSlot.itemIsStackable = armourStackability;
+	writeLog("Armour Stackable State Loaded [itemID:" + convertedID + "]", ONE);
+
+	//Load the armours stack size
+	std::string unconvertedArmourStackSize{};
+	std::getline(armourFile, unconvertedArmourStackSize);
+	int armourStackSize{ stringToInteger(unconvertedArmourStackSize) };
+	selectedItemSlot.itemStackSize = armourStackSize;
+	writeLog("Armour Stack Size Loaded [itemID:" + convertedID + "]", ONE);
+
+	//Load the armours enchantments
+	std::string unconvertedArmourDurability{};
+	std::getline(armourFile, selectedItemSlot.itemEnchantment[0].enchantmentName);
+	writeLog("Armour Enchantments Loaded [itemID:" + convertedID + "]", ONE);
 
 	writeLog("Armour Name [" + selectedItemSlot.itemName + "] Loaded [itemID:" + convertedID + "]", ONE);
 
@@ -151,7 +173,7 @@ void loadFood(Item& selectedItemSlot)
 	std::stringstream convertedMaterial(unconvertedFoodMaterial);
 	int foodMaterial;
 	convertedMaterial >> foodMaterial;
-	*/
+	
 
 	selectedItemSlot.itemMaterial = Materials::FOOD;
 
@@ -578,52 +600,189 @@ void loadWeapon(Item& selectedItemSlot)
 	writeLog("Weapon File [" + directory + "] Closed", TWO);
 }
 //Loads Weapons - Done
-
+*/
 void loadEmpty(Item& selectedItemSlot)
 {
-	int emptyID = 0; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
-	std::string convertedID = std::to_string(emptyID);
-	std::string directory = currentPath + defaultItemDirectory + empty;
+	std::string directory = currentPath + "/Lesthallen RPG/Items/empty";
 
 	std::ifstream emptyFile(directory);
-	writeLog("Weapon File [" + directory + "] Opened", TWO);
+	writeLog("Empty File [" + directory + "] Opened", TWO);
 
-	std::string unconvertedEmptyMaterial; //converts the number that's read from the file into an actual integer
-	std::getline(emptyFile, unconvertedEmptyMaterial);
-	std::stringstream convertedEmptyMaterial(unconvertedEmptyMaterial);
-	int emptyMaterial;
-	convertedEmptyMaterial >> emptyMaterial;
+	//Load the armours material
+	std::getline(emptyFile, selectedItemSlot.itemMaterial.materialName);
+	loadMaterial(selectedItemSlot);
+	writeLog("Empty Material Loaded", ONE);
 
-	selectedItemSlot.itemMaterial = Materials::EMPTY;
-	writeLog("Empty Material Loaded [itemID:" + convertedID + "]", ONE);
+	//Load the armours type
+	std::getline(emptyFile, selectedItemSlot.itemType);
+	writeLog("Empty Type Loaded", ONE);
 
+	//Load the armours sub type
+	std::getline(emptyFile, selectedItemSlot.itemSubType);
+	writeLog("Empty Sub Type Loaded", ONE);
 
-	std::string unconvertedEmptyType;
-	std::getline(emptyFile, unconvertedEmptyType);
-	int emptyType{ stringToInteger(unconvertedEmptyType) };
-
-	selectedItemSlot.itemType = ItemType::EMPTY;
-
-	writeLog("Empty Type Loaded [itemID:" + convertedID + "]", ONE);
-
-
-	std::string unconvertedEmptyQuality;
+	//Load the armours quality
+	std::string unconvertedEmptyQuality{};
 	std::getline(emptyFile, unconvertedEmptyQuality);
 	int emptyQuality{ stringToInteger(unconvertedEmptyQuality) };
 	selectedItemSlot.itemQuality = emptyQuality;
+	writeLog("Empty Quality Loaded", ONE);
 
-	writeLog("Empty Quality Loaded [itemID:" + convertedID + "]", ONE);
+	//Load the armours damage - This should always be 0 for armour, but it's loaded anyways as part of the item struct
+	std::string unconvertedArmourDamage{};
+	std::getline(emptyFile, unconvertedArmourDamage);
+	int armourDamage{ stringToInteger(unconvertedArmourDamage) };
+	selectedItemSlot.itemDamage = armourDamage;
+	writeLog("Empty Damage Loaded", ONE);
 
-	std::getline(emptyFile, selectedItemSlot.itemName);
+	//Load the armours durability
+	std::string unconvertedArmourDurability{};
+	std::getline(emptyFile, unconvertedArmourDurability);
+	int armourDurability{ stringToInteger(unconvertedArmourDurability) };
+	selectedItemSlot.itemDurability = armourDurability;
+	writeLog("Empty Durability Loaded", ONE);
 
-	writeLog("Empty Name Loaded [itemID:" + convertedID + "]", ONE);
+	//Load the armours Stackable state
+	std::string unconvertedArmourStackability{};
+	std::getline(emptyFile, unconvertedArmourStackability);
+	bool armourStackability{ static_cast<bool>(stringToInteger(unconvertedArmourStackability)) };
+	selectedItemSlot.itemIsStackable = armourStackability;
+	writeLog("Empty Stackable State Loaded", ONE);
+
+	//Load the armours stack size
+	std::string unconvertedArmourStackSize{};
+	std::getline(emptyFile, unconvertedArmourStackSize);
+	int armourStackSize{ stringToInteger(unconvertedArmourStackSize) };
+	selectedItemSlot.itemStackSize = armourStackSize;
+	writeLog("Empty Stack Size Loaded", ONE);
+
+	//Load the armours enchantments
+	//std::string unconvertedArmourEnchantment{};
+	std::getline(emptyFile, selectedItemSlot.itemEnchantment[0].enchantmentName);
+	writeLog("Empty Enchantments Loaded", ONE);
+
+	writeLog("Empty Name [" + selectedItemSlot.itemName + "] Loaded", ONE);
 
 	emptyFile.close();
 	writeLog("Empty File [" + directory + "] Closed", TWO);
 }
 
-void loadItem(Item& selectedItemSlot)
+void loadItem(Item& selectedItemSlot)//Don't think I need individual functions to load different item types any more, just can't be arsed to change the names of the variables.
 {
+	
+	int itemID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
+	std::string itemType = checkItemID(itemID);
+
+	std::string convertedID = std::to_string(itemID);
+
+	std::string directory = currentPath + defaultItemDirectory + armour + convertedID + ".txt";
+
+	writeLog("Item Type: " + itemType, ONE);
+
+	if (itemType == armour)
+	{
+		directory = currentPath + defaultItemDirectory + armour + convertedID + ".txt";
+	}
+	else if (itemType == food)
+	{
+		directory = currentPath + defaultItemDirectory + food + convertedID + ".txt";
+	}
+	else if (itemType == ingredients)
+	{
+		directory = currentPath + defaultItemDirectory + ingredients + convertedID + ".txt";
+	}
+	else if (itemType == magicItems)
+	{
+		directory = currentPath + defaultItemDirectory + magicItems + convertedID + ".txt";
+	}
+	else if (itemType == potions)
+	{
+		directory = currentPath + defaultItemDirectory + potions + convertedID + ".txt";
+	}
+	else if (itemType == scrolls)
+	{
+		directory = currentPath + defaultItemDirectory + scrolls + convertedID + ".txt";
+	}
+	else if (itemType == shields)
+	{
+		directory = currentPath + defaultItemDirectory + shields + convertedID + ".txt";
+	}
+	else if (itemType == weapons)
+	{
+		directory = currentPath + defaultItemDirectory + weapons + convertedID + ".txt";
+	}
+	else if (itemType == empty)
+	{
+		directory = currentPath + defaultItemDirectory + "/" + empty;
+	}
+
+	
+
+	std::ifstream armourFile(directory);
+	writeLog("Item File [" + directory + "] Opened", TWO);
+
+	//Load the armours material
+	std::getline(armourFile, selectedItemSlot.itemMaterial.materialName);
+	loadMaterial(selectedItemSlot);
+	writeLog("Item Material Loaded [" + selectedItemSlot.itemMaterial.materialName + "]", ONE);
+
+	//Load the armours type
+	std::getline(armourFile, selectedItemSlot.itemType);
+	writeLog("Item Type Loaded [" + selectedItemSlot.itemType + "]", ONE);
+
+	//Load the armours sub type
+	std::getline(armourFile, selectedItemSlot.itemSubType);
+	writeLog("Item Sub Type Loaded [" + selectedItemSlot.itemSubType + "]", ONE);
+
+	//Load the armours quality
+	std::string unconvertedArmourQuality{};
+	std::getline(armourFile, unconvertedArmourQuality);
+	int armourQuality{ stringToInteger(unconvertedArmourQuality) };
+	selectedItemSlot.itemQuality = armourQuality;
+	writeLog("Item Quality Loaded [" + unconvertedArmourQuality + "]", ONE);
+
+	//Load the armours damage - This should always be 0 for armour, but it's loaded anyways as part of the item struct
+	std::string unconvertedArmourDamage{};
+	std::getline(armourFile, unconvertedArmourDamage);
+	int armourDamage{ stringToInteger(unconvertedArmourDamage) };
+	selectedItemSlot.itemDamage = armourDamage;
+	writeLog("Item Damage Loaded [" + unconvertedArmourDamage + "]", ONE);
+
+	//Load the armours durability
+	std::string unconvertedArmourDurability{};
+	std::getline(armourFile, unconvertedArmourDurability);
+	int armourDurability{ stringToInteger(unconvertedArmourDurability) };
+	selectedItemSlot.itemDurability = armourDurability;
+	writeLog("Item Durability Loaded [" + unconvertedArmourDurability + "]", ONE);
+
+	//Load the armours Stackable state
+	std::string unconvertedArmourStackability{};
+	std::getline(armourFile, unconvertedArmourStackability);
+	bool armourStackability{ static_cast<bool>(stringToInteger(unconvertedArmourStackability)) };
+	selectedItemSlot.itemIsStackable = armourStackability;
+	writeLog("Item Stackable State Loaded [" + unconvertedArmourStackability + "]", ONE);
+
+	//Load the armours stack size
+	std::string unconvertedArmourStackSize{};
+	std::getline(armourFile, unconvertedArmourStackSize);
+	int armourStackSize{ stringToInteger(unconvertedArmourStackSize) };
+	selectedItemSlot.itemStackSize = armourStackSize;
+	writeLog("Item Stack Size Loaded [" + unconvertedArmourStackSize + "]", ONE);
+
+	//Load the armours enchantments
+	//std::string unconvertedArmourDurability{};
+	std::getline(armourFile, selectedItemSlot.itemEnchantment[0].enchantmentName);
+	writeLog("Item Enchantments Loaded [" + selectedItemSlot.itemEnchantment[0].enchantmentName + "]", ONE);
+
+	std::getline(armourFile, selectedItemSlot.itemName);
+
+	writeLog("Item Name [" + selectedItemSlot.itemName + "] Loaded", ONE);
+
+	armourFile.close();
+	writeLog("Item File [" + directory + "] Closed", TWO);
+
+
+	/*
 	int itemID = selectedItemSlot.itemID; //these 3 lines just get the armourID from the class and create 1 string that is the directory of the items file
 	std::string convertedID{ std::to_string(itemID) };
 	std::string itemType = checkItemID(itemID);
@@ -665,4 +824,5 @@ void loadItem(Item& selectedItemSlot)
 	{
 		loadEmpty(selectedItemSlot);
 	}
+	*/
 }

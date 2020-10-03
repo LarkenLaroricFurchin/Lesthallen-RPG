@@ -4,8 +4,7 @@
 
 
 
-int getItemScore(int material, int type, int quality);
-std::string getItemClass(int itemScore);
+int getItemQuality(int materialQuality, std::string type, int quality);
 
 
 
@@ -49,31 +48,47 @@ enum class ItemType
 	PLATEMAIL = 40,
 };
 
-struct Armour
+
+
+class Material
 {
-	short itemID{ 0000 };
-	Materials armourMaterial{ Materials::CLOTH };
-	ItemType itemType{ ItemType::PLAIN };
-	short armourQuality{ 1 };
-	int armourScore{ getItemScore(static_cast<int>(armourMaterial), static_cast<int>(itemType), armourQuality) };
-	std::string armourClass{ getItemClass(armourScore) };
-	std::string armourName{"Cloth Cap"};
+public:
+	std::string materialName{"Cloth"};//Just the name of the material
+	std::string materialType{"Fabric"};//used to detirmine what the material can be used for when crafting is implemented
+	short materialQuality{1};//1 = extremelly poor quality, very bad stats. 99 = extremelly high quality, very good stats
+	short materialStrength{1};//0 = breaks if interacted with. 1 = very fine, could rip with barely any effort. 99 = Extremely strong, would take a nuclear bomb or the hottest furnace to break.
+	short materialWeight{1};//1 = extremelly light, starting strngth is more than enough for this. 99 = extremelly heavy, will need very high strength stat to carry items made from this material
 };
 
 
+class enchantment
+{
+public:
+	std::string enchantmentName{"Fire Protection"};
+	double enchantmentDamageMultiplier{0.0};
+	std::string enchantmentDamageProtectionType{"Fire"};
+	double enchantmentDamageProtectionMultiplier{0.5};
+};
 
 struct Item
 {
-	short itemID{ 0000 };
-	Materials itemMaterial{ Materials::CLOTH };
-	ItemType itemType{ ItemType::PLAIN };
-	short itemQuality{ 1 };
-	int itemScore{ getItemScore(static_cast<int>(itemMaterial), static_cast<int>(itemType), itemQuality) };
-	double itemDamage{0};
-	std::string itemClass{ getItemClass(itemScore) };
+	int itemID{ 0000 };
+	Material itemMaterial{};
+	std::string itemType{ "Armour" };
+	std::string itemSubType{ "Plain" };
+	int itemQuality{ 1 };
+	double itemDamage{ 0 };
+	double itemDurability{ 10 };
+	bool itemIsStackable{ 1 };
+	int itemStackSize{ 1 };
+	int itemWeight{1};
+	enchantment itemEnchantment[10]{};
 	std::string itemName{"Cloth Cap"};
 };
 
+class Material;
+void loadMaterial(Item& selectedItemSlot);
+/*
 void loadArmour(Item& selectedItemSlot);
 void loadFood(Item& selectedItemSlot);
 void loadIngredient(Item& selectedItemSlot);
@@ -82,5 +97,6 @@ void loadPotion(Item& selectedItemSlot);
 void loadScroll(Item& selectedItemSlot);
 void loadShield(Item& selectedItemSlot);
 void loadWeapon(Item& selectedItemSlot);
+*/
 void loadItem(Item& selectedItemSlot);
 #endif

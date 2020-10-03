@@ -12,7 +12,7 @@ enum LogLevels
 };
 
 void writeLog(std::string eventToLog, int logLevel);
-
+void writeException(std::string eventToLog);
 
 
 #endif
